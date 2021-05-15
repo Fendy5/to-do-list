@@ -6,50 +6,23 @@
       content-class="bg-grey-2"
   >
     <q-list>
-      <q-item-label header>Essential {{ sidebar.opened }}</q-item-label>
+      <q-item-label header>Fendy</q-item-label>
       <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
         <q-item-section avatar>
-          <q-icon name="school" />
+          <q-icon name="home" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>Docs</q-item-label>
-          <q-item-label caption>quasar.dev</q-item-label>
+          <q-item-label>首页</q-item-label>
+<!--          <q-item-label caption>quasar.dev</q-item-label>-->
         </q-item-section>
       </q-item>
-      <q-item clickable tag="a" target="_blank" href="https://github.com/quasarframework/">
+      <q-item clickable tag="a" to="/random-string">
         <q-item-section avatar>
-          <q-icon name="code" />
+          <q-icon name="account_circle" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>Github</q-item-label>
-          <q-item-label caption>github.com/quasarframework</q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item clickable tag="a" target="_blank" href="https://chat.quasar.dev">
-        <q-item-section avatar>
-          <q-icon name="chat" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>Discord Chat Channel</q-item-label>
-          <q-item-label caption>chat.quasar.dev</q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
-        <q-item-section avatar>
-          <q-icon name="forum" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>Forum</q-item-label>
-          <q-item-label caption>forum.quasar.dev</q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item clickable tag="a" target="_blank" href="https://twitter.com/quasarframework">
-        <q-item-section avatar>
-          <q-icon name="rss_feed" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>Twitter</q-item-label>
-          <q-item-label caption>@quasarframework</q-item-label>
+          <q-item-label>个人中心</q-item-label>
+<!--          <q-item-label caption>根据条件生成随机字符串</q-item-label>-->
         </q-item-section>
       </q-item>
     </q-list>

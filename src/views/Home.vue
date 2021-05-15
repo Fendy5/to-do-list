@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky position="bottom-right" :offset="[64, 64]">
       <q-fab
           icon="add"
           direction="up"
