@@ -13,7 +13,7 @@
 import HelloWorld from '../components/HelloWorld.vue'
 import ToHeader from '@/layout/ToHeader.vue'
 import Sidebar from "@/layout/Sidebar.vue"
-import ToFooter from '@/layout/ToFooter'
+import ToFooter from '@/layout/ToFooter.vue'
 import { Vue, Component } from 'vue-property-decorator'
 
 @Component({

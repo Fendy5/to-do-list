@@ -10,7 +10,7 @@ import {Component,Vue} from "vue-property-decorator"
 })
 
 export default class extends Vue {
-  private year=''
+  private year = 0
 
   created() {
     const date=new Date()
