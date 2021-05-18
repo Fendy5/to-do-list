@@ -15,4 +15,7 @@ export default class extends Vue {}
 </script>
 
 <style lang="scss">
+html {
+  background-color: $bg-secondary;
+}
 </style>

@@ -1,0 +1,85 @@
+$widths: 14,25;
+@each $i in $widths{
+  .wh-#{$i} {
+    width: $i+px !important;
+    height: $i+px !important;
+  }
+}
+.w-full {
+  width: 100%;
+}
+
+$paddings: 8,16,24,32;
+@each $i in $paddings{
+  .pt-#{$i} {
+    padding-top: $i+px;
+  }
+  .pl-#{$i} {
+    padding-left: $i+px;
+  }
+  .pr-#{$i} {
+    padding-right: $i+px;
+  }
+  .pb-#{$i} {
+    padding-bottom: $i+px;
+  }
+  .py-#{$i} {
+    padding-top: $i+px;
+    padding-bottom: $i+px;
+  }
+  .px-#{$i} {
+    padding-left: $i+px;
+    padding-right: $i+px;
+  }
+  .p-#{$i} {
+    padding: $i+px;
+  }
+  .ml-#{$i} {
+    margin-left: $i+px;
+  }
+  .mr-#{$i} {
+    margin-right: $i+px;
+  }
+  .mt-#{$i} {
+    margin-top: $i+px;
+  }
+  .mb-#{$i} {
+    margin-bottom: $i+px;
+  }
+}
+
+.shadow {
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
+}
+.text-primary {
+  color: $primary
+}
+.text-secondary {
+  color: $secondary
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fx {
+  display: flex;
+  align-items: center;
+}
+
+.fx-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fx-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

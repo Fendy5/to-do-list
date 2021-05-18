@@ -2,7 +2,7 @@
 // to match your app's branding.
 
 $primary   : #a166ef;
-$secondary : #26A69A;
+$secondary : #9fa2a8;
 $accent    : #e951b1;
 
 $dark      : #1D1D1D;
@@ -11,5 +11,12 @@ $positive  : #21BA45;
 $negative  : #C10015;
 $info      : #31CCEC;
 $warning   : #F2C037;
-
 @import '~quasar-variables-styl';
+
+
+$bg-secondary: #fafafa;
+
+:export {
+  bg-secondary: $bg-secondary;
+  primary: $primary;
+}
