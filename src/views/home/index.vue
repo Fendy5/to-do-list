@@ -1,5 +1,7 @@
 <template>
   <div class="home">
+    <svg-icon icon-class="folder" />
+    <svg-icon icon-class="todo-list" />
     <q-page-sticky position="bottom-right" :offset="[64, 64]">
       <q-fab
           icon="add"
@@ -22,5 +24,6 @@ import HelloWorld from '@/components/HelloWorld.vue'
     HelloWorld,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+}
 </script>

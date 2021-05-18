@@ -17,6 +17,11 @@ module.exports = {
   transpileDependencies: [
     'quasar'
   ],
+  lintOnSave: false,
+  productionSourceMap: process.env.NODE_ENV === 'development',
+  configureWebpack: {
+    devtool: process.env.NODE_ENV === 'development' ? 'eval-source-map' : undefined,
+  },
   chainWebpack(config) {
     // provide the app's title in html-webpack-plugin's options list so that
     // it can be accessed in index.html to inject the correct title.
@@ -43,10 +48,10 @@ module.exports = {
     // https://webpack.js.org/configuration/devtool/#development
     // Change development env source map if you want.
     // The default in vue-cli is 'eval-cheap-module-source-map'.
-    // config
-    //   .when(process.env.NODE_ENV === 'development',
-    //     config => config.devtool('eval-cheap-source-map')
-    //   )
+    config
+      .when(process.env.NODE_ENV === 'development',
+        config => config.devtool('eval-cheap-source-map')
+      )
 
     config
     .when(process.env.NODE_ENV !== 'development',
@@ -61,11 +66,6 @@ module.exports = {
               priority: 10,
               chunks: 'initial' // only package third parties that are initially dependent
             },
-            elementUI: {
-              name: 'chunk-elementUI', // split elementUI into a single package
-              priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-              test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
-            },
             commons: {
               name: 'chunk-commons',
               test: path.resolve(__dirname, 'src/components'),
@@ -79,5 +79,25 @@ module.exports = {
         config.optimization.runtimeChunk('single')
       }
     )
+
+    config.module
+    .rule('svg')
+    .exclude.add(path.resolve(__dirname, 'src/assets/icons'))
+    .end()
+
+    //再添加svg-sprite-loader处理该文件夹
+    config.module
+    .rule('icons')
+    .test(/\.svg$/)
+    .include.add(path.resolve(__dirname, 'src/assets/icons'))
+    .end()
+    .use('svg-sprite-loader')
+    .loader('svg-sprite-loader')
+    .options({
+      symbolId: 'icon-[name]'
+    })
+  },
+  css: {
+    sourceMap: process.env.NODE_ENV === 'development'
   }
 }

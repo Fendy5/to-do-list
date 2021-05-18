@@ -1,5 +1,5 @@
 <template>
-  <q-header elevated class="glossy">
+  <q-header elevated>
     <q-toolbar>
       <q-btn
           flat
@@ -14,7 +14,7 @@
         To Do List
       </q-toolbar-title>
 
-      <div>Version 0.91</div>
+      <div class="date">{{ today }}</div>
     </q-toolbar>
   </q-header>
 </template>
@@ -30,9 +30,23 @@ export default class extends Vue {
   private toggleSideBar() {
     AppModule.ToggleSideBar()
   }
+
+  private today = ''
+
+  created() {
+    const date = new Date()
+    this.today = `${date.getMonth()+1}月${date.getDate()}日`
+  }
+
 }
 </script>
 
 <style lang="scss" scoped>
-
+.q-header {
+  box-shadow: 0 2px 15px #ad7af1;
+}
+.date {
+  font-size: 18px;
+  font-weight: 500;
+}
 </style>

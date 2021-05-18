@@ -3,6 +3,7 @@ import App from './layout/App.vue'
 import router from './router'
 import store from './store'
 import './quasar'
+import '@/assets/icons'
 
 Vue.config.productionTip = false
 

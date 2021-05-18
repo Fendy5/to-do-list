@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <to-header />
-    <sidebar />
+    <to-sidebar />
     <q-page-container>
       <RouterView />
     </q-page-container>
@@ -12,7 +12,7 @@
 <script lang="ts">
 import HelloWorld from '../components/HelloWorld.vue'
 import ToHeader from '@/layout/ToHeader.vue'
-import Sidebar from "@/layout/Sidebar.vue"
+import ToSidebar from "@/layout/ToSidebar.vue"
 import ToFooter from '@/layout/ToFooter.vue'
 import { Vue, Component } from 'vue-property-decorator'
 
@@ -21,7 +21,7 @@ import { Vue, Component } from 'vue-property-decorator'
   components: {
     ToHeader,
     ToFooter,
-    Sidebar,
+    ToSidebar,
     HelloWorld
   }
 })
@@ -33,7 +33,6 @@ export default class extends Vue {
 
 <style lang="scss">
 .q-page-container {
-  padding-top:0 !important;
   min-height: calc(100vh - 50px);
 }
 </style>
