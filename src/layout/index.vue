@@ -10,10 +10,9 @@
 </template>
 
 <script lang="ts">
-import HelloWorld from '../components/HelloWorld.vue'
-import ToHeader from '@/layout/ToHeader.vue'
-import ToSidebar from "@/layout/ToSidebar.vue"
-import ToFooter from '@/layout/ToFooter.vue'
+import ToHeader from '@/layout/components/ToHeader.vue'
+import ToSidebar from "@/layout/components/ToSidebar.vue"
+import ToFooter from '@/layout/components/ToFooter.vue'
 import { Vue, Component } from 'vue-property-decorator'
 
 @Component({
@@ -21,8 +20,7 @@ import { Vue, Component } from 'vue-property-decorator'
   components: {
     ToHeader,
     ToFooter,
-    ToSidebar,
-    HelloWorld
+    ToSidebar
   }
 })
 
