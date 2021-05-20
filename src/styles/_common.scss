@@ -1,4 +1,4 @@
-$widths: 14,25;
+$widths: 14,25,35;
 @each $i in $widths{
   .wh-#{$i} {
     width: $i+px !important;
@@ -82,4 +82,14 @@ $paddings: 8,16,24,32;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.relative {
+  position: relative;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.font-bold {
+  font-weight: 700;
 }

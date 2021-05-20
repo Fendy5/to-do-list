@@ -5,7 +5,7 @@
       <span class="pl-8 font-bold text-lg text-primary">To Do List</span>
     </div>
     <div class="login shadow">
-      <h3 class="text-primary text-center">登录</h3>
+      <h3 class="text-primary text-center">注册</h3>
       <div class="login-form mx-auto">
         <div class="pb-32">
           <q-input color="primary" v-model="email" label="邮箱">
@@ -23,15 +23,15 @@
         </div>
         <div class="pb-32 pt-16">
           <q-btn class="w-full" color="primary">
-            登录
+            注册
             <template v-slot:loading>
               <q-spinner-radio />
             </template>
           </q-btn>
         </div>
-        <div class="fx-between">
-          <RouterLink to="/register" class="text-primary">免费注册</RouterLink>
-          <RouterLink to="/forget" class="text-secondary">忘记密码</RouterLink>
+        <div class="text-center">
+          <span class="text-secondary">已经有账号？</span>
+          <RouterLink class="text-primary" to="/login">登录</RouterLink>
         </div>
       </div>
     </div>
