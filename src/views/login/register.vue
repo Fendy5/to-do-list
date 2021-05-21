@@ -8,21 +8,21 @@
       <h3 class="text-primary text-center">注册</h3>
       <div class="login-form mx-auto">
         <div class="pb-32">
-          <q-input color="primary" v-model="email" label="邮箱">
+          <q-input color="primary" v-model="loginForm.email" label="邮箱">
             <template v-slot:prepend>
               <q-icon name="email" />
             </template>
           </q-input>
         </div>
         <div class="pb-32">
-          <q-input color="primary" v-model="email" label="密码">
+          <q-input color="primary" type="password" v-model="loginForm.password" label="密码">
             <template v-slot:prepend>
               <q-icon name="password" />
             </template>
           </q-input>
         </div>
         <div class="pb-32 pt-16">
-          <q-btn class="w-full" color="primary">
+          <q-btn @click="handleRegister" class="w-full" color="primary">
             注册
             <template v-slot:loading>
               <q-spinner-radio />
@@ -39,14 +39,20 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator"
+import {Component} from "vue-property-decorator"
+import loginMixin from '@/mixins/login'
+import { mixins } from 'vue-class-component'
+import {register} from "@/api/users"
 
 @Component({
-  name: 'Login'
+  name: 'Register'
 })
 
-export default class Login extends Vue {
-  private email = ''
+export default class Login extends mixins(loginMixin) {
+  private async handleRegister() {
+    const { data } = await register(this.loginForm)
+    data && await this.$router.push('/login')
+  }
 }
 </script>
 

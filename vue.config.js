@@ -18,6 +18,22 @@ module.exports = {
     'quasar'
   ],
   lintOnSave: false,
+  devServer: {
+    overlay: {
+      warnings: false,
+      errors: true
+    },
+    proxy: {
+      // 开发环境代理访问接口
+      '/dev-api': {
+        target: 'http://localhost:7026',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/dev-api': ''
+        }
+      }
+    }
+  },
   productionSourceMap: process.env.NODE_ENV === 'development',
   configureWebpack: {
     devtool: process.env.NODE_ENV === 'development' ? 'eval-source-map' : undefined,

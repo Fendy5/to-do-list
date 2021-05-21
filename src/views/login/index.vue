@@ -8,21 +8,21 @@
       <h3 class="text-primary text-center">登录</h3>
       <div class="login-form mx-auto">
         <div class="pb-32">
-          <q-input color="primary" v-model="email" label="邮箱">
+          <q-input color="primary" @blur="validateEmail" v-model="loginForm.email" label="邮箱">
             <template v-slot:prepend>
               <q-icon name="email" />
             </template>
           </q-input>
         </div>
         <div class="pb-32">
-          <q-input color="primary" v-model="email" label="密码">
+          <q-input color="primary" type="password" v-model="loginForm.password" label="密码">
             <template v-slot:prepend>
               <q-icon name="password" />
             </template>
           </q-input>
         </div>
         <div class="pb-32 pt-16">
-          <q-btn class="w-full" color="primary">
+          <q-btn @click="handleLogin" class="w-full" color="primary">
             登录
             <template v-slot:loading>
               <q-spinner-radio />
@@ -39,14 +39,49 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator"
+import {Component,Watch} from "vue-property-decorator"
+import { mixins } from 'vue-class-component'
+import loginMixin from '@/mixins/login'
+import {UserModule} from "@/store/modules/user"
+import {Dictionary} from "vue-router/types/router"
+import {Route} from "vue-router"
 
 @Component({
   name: 'Login'
 })
 
-export default class Login extends Vue {
-  private email = ''
+export default class Login extends mixins(loginMixin) {
+  private redirect?: string
+  private otherQuery: Dictionary<string> = {}
+
+  private async handleLogin() {
+    await UserModule.Login(this.loginForm)
+    this.$router.push({
+      path: this.redirect || '/',
+      query: this.otherQuery
+    }).catch(err => {
+      console.warn(err)
+    })
+  }
+
+  @Watch('$route', { immediate: true })
+  private onRouteChange(route: Route) {
+    const query = route.query as Dictionary<string>
+    if (query) {
+      this.redirect = query.redirect
+      this.otherQuery = this.getOtherQuery(query)
+    }
+  }
+
+  private getOtherQuery(query: Dictionary<string>) {
+    return Object.keys(query).reduce((acc, cur) => {
+      if (cur !== 'redirect') {
+        acc[cur] = query[cur]
+      }
+      return acc
+    }, {} as Dictionary<string>)
+  }
+
 }
 </script>
 
@@ -63,6 +98,12 @@ export default class Login extends Vue {
   padding: 32px;
   .login-form {
     width: 350px;
+  }
+}
+@media (max-width: 500px) {
+
+  .login {
+    width: 100%;
   }
 }
 </style>
