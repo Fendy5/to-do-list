@@ -101,9 +101,12 @@ export default class Login extends mixins(loginMixin) {
   }
 }
 @media (max-width: 500px) {
-
   .login {
+    height: 100%;
     width: 100%;
+    .login-form {
+      width: 90%;
+    }
   }
 }
 </style>

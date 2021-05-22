@@ -42,5 +42,7 @@ export default class SvgIcon extends Vue {
 svg {
   width: 5rem;
   height: 5rem;
+  color: #ffffff;
+  fill: currentColor;
 }
 </style>
