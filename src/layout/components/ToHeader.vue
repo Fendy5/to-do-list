@@ -11,7 +11,7 @@
       />
 
       <q-toolbar-title>
-        To Do List
+        <router-link class="text-white" to="/"> To Do List </router-link>
       </q-toolbar-title>
 
       <div class="date">{{ today }}</div>
