@@ -26,18 +26,25 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     const res = response.data
+    // code-0,请求成功；code-1，未登录；code-2,服务器返回失败信息
     if (res.code === 0 && res.message) {
       Notify.create({
         type: 'positive',
         position: 'top',
         message: res.message
       })
-    } else if (res.code === 1) {
+    } else if (res.code === 1 || res.code === 2) {
       Notify.create({
         type: 'negative',
         position: 'top',
         message: res.message
       })
+      if (res.code === 1) {
+        setTimeout(() => {
+          UserModule.ResetToken()
+          location.reload()
+        }, 1000)
+      }
       // return Promise.reject(res)
     }
     return res
