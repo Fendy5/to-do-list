@@ -1,10 +1,12 @@
 <template>
   <div class="home">
     <div class="folder-list">
-      <RouterLink v-for="i in 10" :key="i" to="/user" class="folder">
-        <svg-icon class="text-primary" icon-class="folder" />
-        <span class="text-primary text-center">新建文件夹新建文件夹{{i}}</span>
-      </RouterLink>
+      <div v-for="i in folderList" :key="i.id" class="folder">
+        <RouterLink to="/user">
+          <svg-icon class="text-primary" icon-class="folder" />
+        </RouterLink>
+        <span class="text-primary text-center">{{ i.name }}</span>
+      </div>
 
       <!--    <svg-icon class="text-primary" icon-class="todo-list" />-->
       <q-page-sticky position="bottom-right" :offset="[64, 64]">
@@ -15,7 +17,7 @@
         >
           <q-fab-action @click="prompt=true" color="primary" >
             <template>
-              <svg-icon class="text-white wh-25" icon-class="folder" />
+              <svg-icon class="text-white wh-30" icon-class="folder" />
             </template>
           </q-fab-action>
           <q-fab-action color="primary"  >
@@ -38,7 +40,7 @@
 
         <q-card-actions align="right" class="text-primary">
           <q-btn flat label="取消" v-close-popup />
-          <q-btn flat label="确定" v-close-popup />
+          <q-btn flat label="确定" @click="addFolder" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -48,6 +50,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import HelloWorld from '@/components/HelloWorld.vue'
+import {addFolderApi, getFoldersApi} from "@/api/folders"
 
 @Component({
   components: {
@@ -57,6 +60,26 @@ import HelloWorld from '@/components/HelloWorld.vue'
 export default class Home extends Vue {
   private folderName = ''
   private prompt = false
+  private folderList = []
+
+  private addFolder() {
+    addFolderApi({folderName: this.folderName}).then( () => {
+      this.prompt = false
+      this.getFolderList()
+      this.folderName = ''
+    })
+  }
+
+  private getFolderList() {
+    getFoldersApi().then(value => {
+      this.folderList = value.data.folders
+    })
+  }
+
+  created() {
+    this.getFolderList()
+  }
+
 }
 </script>
 

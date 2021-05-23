@@ -1,4 +1,4 @@
-$widths: 14,25,35,150;
+$widths: 14,25,30,150;
 @each $i in $widths{
   .wh-#{$i} {
     width: $i+px !important;
