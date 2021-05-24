@@ -49,4 +49,7 @@ export default class extends Vue {
   font-size: 18px;
   font-weight: 500;
 }
+a {
+  text-decoration: none;
+}
 </style>

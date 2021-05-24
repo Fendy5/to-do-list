@@ -25,6 +25,16 @@ const routes: Array<RouteConfig> = [
         name: 'User',
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/index.vue')
       },
+      {
+        path: '/folder/:id',
+        name: 'Folder',
+        component: () => import(/* webpackChunkName: "user" */ '@/views/todo-list/folder.vue')
+      },
+      {
+        path: '/list/:id',
+        name: 'ToDoList',
+        component: () => import(/* webpackChunkName: "user" */ '@/views/todo-list/index.vue')
+      }
     ]
   },
   {
