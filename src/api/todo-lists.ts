@@ -22,7 +22,7 @@ export const deleteTodoListsApi = (id: string) =>
 
 export const updateTodoListsApi = (data: any, id: string) =>
   request({
-    url: `/api/v1/folders/${id}`,
+    url: `/api/v1/todo-lists/${id}`,
     method: 'put',
     data
   })

@@ -56,7 +56,7 @@ export default class Folder extends Vue {
 
   private edit(id: string, name: string) {
     (this.name && name!==this.name) && updateTodoListsApi({name: this.name}, id).then(() => {
-      this.getFolderList()
+      this.getTodoList()
       this.name = ''
     })
   }

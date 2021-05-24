@@ -25,7 +25,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="name" autofocus @keyup.enter="prompt=false" />
+          <q-input dense v-model="name" autofocus @keyup.enter="add" />
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
