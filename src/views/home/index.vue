@@ -2,12 +2,31 @@
   <div class="home">
     <div class="folder-list">
       <div v-for="i in folderList" :key="i.id" class="folder">
-        <RouterLink to="/user">
+        <div to="/user">
           <svg-icon class="text-primary" icon-class="folder" />
-        </RouterLink>
+          <q-menu :touch-position="true" :context-menu="true" transition-show="rotate" transition-hide="rotate">
+            <q-list dense style="min-width: 100px">
+              <q-item clickable>
+                <q-item-section>编辑</q-item-section>
+                <q-popup-edit @before-hide="editFolder(i.id)" v-model="editPopup" content-class="bg-accent text-white">
+                  <q-input dark color="white" v-model="folderName" dense autofocus counter>
+                    <template v-slot:append>
+                      <q-icon name="edit" />
+                    </template>
+                  </q-input>
+                </q-popup-edit>
+              </q-item>
+              <q-item @click="deleteFolder(i.id)" clickable v-close-popup>
+                <q-item-section>删除</q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup>
+                <q-item-section>属性</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </div>
         <span class="text-primary text-center">{{ i.name }}</span>
       </div>
-
       <!--    <svg-icon class="text-primary" icon-class="todo-list" />-->
       <q-page-sticky position="bottom-right" :offset="[64, 64]">
         <q-fab
@@ -50,7 +69,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import HelloWorld from '@/components/HelloWorld.vue'
-import {addFolderApi, getFoldersApi} from "@/api/folders"
+import {addFolderApi, deleteFoldersApi, getFoldersApi, updateFoldersApi} from "@/api/folders"
 
 @Component({
   components: {
@@ -60,6 +79,7 @@ import {addFolderApi, getFoldersApi} from "@/api/folders"
 export default class Home extends Vue {
   private folderName = ''
   private prompt = false
+  private editPopup = ''
   private folderList = []
 
   private addFolder() {
@@ -67,6 +87,27 @@ export default class Home extends Vue {
       this.prompt = false
       this.getFolderList()
       this.folderName = ''
+    })
+  }
+
+  private editFolder(id: number) {
+    this.folderName && updateFoldersApi({folderName: this.folderName}, id).then(() => {
+      this.getFolderList()
+      this.folderName = ''
+    })
+  }
+
+  private deleteFolder(id: number) {
+    this.$q.dialog({
+      title: '警告',
+      message: '删除文件夹会同时删除里面的所有数据，是否继续？',
+      cancel: '取消',
+      ok: '确定',
+      persistent: true
+    }).onOk(() => {
+      deleteFoldersApi(id).then(() => {
+        this.getFolderList()
+      })
     })
   }
 
@@ -88,8 +129,8 @@ export default class Home extends Vue {
 .home {
   .folder-list {
     display: grid;
-    grid-gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     .folder {
       @extend .flex-column-center;
       @extend .font-bold;
