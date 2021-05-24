@@ -50,8 +50,8 @@ export default class Home extends Vue {
   private editPopup = ''
   private folderList = []
 
-  private addFolder(folderName) {
-    addFolderApi({folderName: folderName}).then( () => {
+  private addFolder(folderName: string) {
+    addFolderApi({folderName: folderName}).then(() => {
       this.prompt = false
       this.getFolderList()
       this.folderName = ''
