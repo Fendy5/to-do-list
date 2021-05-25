@@ -31,6 +31,6 @@ export default class extends Vue {
 
 <style lang="scss">
 .q-page-container {
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - 65px);
 }
 </style>

@@ -2,7 +2,7 @@
   <div>
     <div class="folder-list">
       <div v-for="i in todoList" :key="i.id" class="folder">
-        <RouterLink :to="`/folder/`">
+        <RouterLink :to="`/list/${i.list_id}`">
           <svg-icon class="text-primary todo-icon" icon-class="todo-list" />
           <q-menu :touch-position="true" :context-menu="true" transition-show="rotate" transition-hide="rotate">
             <q-list dense style="min-width: 100px">
