@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <div class="folder-list">
+    <q-spinner-cube v-if="loading" class="center" size="5em" color="primary" />
+    <div v-else class="folder-list">
       <div v-for="i in folderList" :key="i.id" class="folder">
         <RouterLink :to="`/folder/${i.fd_id}`">
           <svg-icon class="text-primary" icon-class="folder" />
@@ -48,13 +49,15 @@ export default class Home extends Vue {
   private folderName = ''
   private prompt = false
   private editPopup = ''
+  private loading = true
   private folderList = []
 
   private addFolder(folderName: string) {
-    addFolderApi({folderName: folderName}).then(() => {
-      this.prompt = false
-      this.getFolderList()
-      this.folderName = ''
+    addFolderApi({folderName: folderName}).then((val) => {
+      // this.prompt = false
+      // this.getFolderList()
+      // this.folderName = ''
+      this.$router.push(`/folder/${val.data.folder_id}`)
     })
   }
 
@@ -86,6 +89,7 @@ export default class Home extends Vue {
   private getFolderList() {
     getFoldersApi().then(value => {
       this.folderList = value.data.folders
+      this.loading = false
     })
   }
 

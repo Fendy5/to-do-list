@@ -7,6 +7,12 @@ export const getTodoListsApi = (params: any) =>
     params
   })
 
+export const getTodoDetailApi = (id: string) =>
+  request({
+    url: `/api/v1/todo-lists/${id}`,
+    method: 'get'
+  })
+
 export const addTodoListsApi = (data: any) =>
   request({
     url: '/api/v1/todo-lists',
@@ -23,6 +29,13 @@ export const deleteTodoListsApi = (id: string) =>
 export const updateTodoListsApi = (data: any, id: string) =>
   request({
     url: `/api/v1/todo-lists/${id}`,
+    method: 'put',
+    data
+  })
+
+export const updateItemsApi = (data: any, id: string) =>
+  request({
+    url: `/api/v1/todo-items/${id}`,
     method: 'put',
     data
   })

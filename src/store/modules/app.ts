@@ -6,6 +6,7 @@ export interface IAppState {
   sidebar: {
     opened: boolean
   }
+  // loading: boolean
 }
 
 @Module({ dynamic: true, store, name: 'app' })
@@ -13,6 +14,8 @@ class App extends VuexModule implements IAppState {
   public sidebar = {
     opened: getSidebarStatus() !== 'closed'
   }
+
+  // public loading = true
 
   @Mutation
   private TOGGLE_SIDEBAR() {
@@ -29,6 +32,16 @@ class App extends VuexModule implements IAppState {
     this.sidebar.opened = false
     setSidebarStatus('closed')
   }
+  //
+  // @Mutation
+  // private TOGGLE_LOADING() {
+  //   this.loading = !this.loading
+  // }
+  //
+  // @Mutation
+  // private HANDLE_LOADING() {
+  //   this.loading = true
+  // }
 
   @Action
   public ToggleSideBar() {
@@ -39,6 +52,16 @@ class App extends VuexModule implements IAppState {
   public CloseSideBar() {
     this.CLOSE_SIDEBAR()
   }
+  //
+  // @Action
+  // public ToggleLoading() {
+  //   this.TOGGLE_LOADING()
+  // }
+  //
+  // @Action
+  // public HandleLoading() {
+  //   this.HANDLE_LOADING()
+  // }
 
 }
 

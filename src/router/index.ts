@@ -14,15 +14,18 @@ const routes: Array<RouteConfig> = [
         path: 'home',
         component: () => import(/* webpackChunkName: "home" */ '@/views/home/index.vue'),
         name: 'Home',
+        meta: { title: 'To Do List' }
       },
       {
         path: '/data-statistics',
         name: 'DataStatistics',
+        meta: { title: '数据统计' },
         component: () => import(/* webpackChunkName: "data-statistics" */ '@/views/data-statistics/index.vue')
       },
       {
         path: '/user',
         name: 'User',
+        meta: { title: '用户中心' },
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/index.vue')
       },
       {

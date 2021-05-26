@@ -101,3 +101,9 @@ $paddings: 8,16,24,32;
 .cursor-move {
   cursor: move;
 }
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -5,6 +5,7 @@ import { UserModule } from '@/store/modules/user'
 const whiteList = ['/login', '/register']
 
 router.beforeEach(async(to: Route, _: Route, next: any) => {
+  to.meta.title && (document.title = to.meta.title)
   if (UserModule.token) {
     if (to.path === '/login') {
       next({path: '/'})

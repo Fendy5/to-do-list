@@ -1,5 +1,6 @@
 <template>
   <div>
+    <q-spinner-cube v-if="loading" class="center" size="5em" color="primary" />
     <div class="folder-list">
       <div v-for="i in todoList" :key="i.id" class="folder">
         <RouterLink :to="`/list/${i.list_id}`">
@@ -27,8 +28,8 @@
         </RouterLink>
         <span class="text-primary text-center">{{ i.name }}</span>
       </div>
+      <page-sticky @click="addTodoList" />
     </div>
-    <page-sticky @click="addTodoList" />
   </div>
 </template>
 
@@ -45,6 +46,7 @@ export default class Folder extends Vue {
   private todoList = []
   private name = ''
   private editPopup = ''
+  private loading = true
 
   created() {
     this.getTodoList()
@@ -78,13 +80,16 @@ export default class Folder extends Vue {
   private getTodoList() {
     getTodoListsApi({folder_id: this.$route.params.id}).then(value => {
       this.todoList = value.data.todoList
+      document.title = value.data.folder.name
+      this.loading = false
     })
   }
 
   private addTodoList(name: string) {
-    addTodoListsApi({name,folder_id: this.$route.params.id}).then(() => {
-      this.getTodoList()
-      this.name = ''
+    addTodoListsApi({name,folder_id: this.$route.params.id}).then((val) => {
+      this.$router.push(`/list/${val.data.list_id}`)
+      // this.getTodoList()
+      // this.name = ''
     })
   }
 }

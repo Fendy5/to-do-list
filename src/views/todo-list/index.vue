@@ -1,54 +1,57 @@
 <template>
-  <div class="todo-list">
-    <q-tabs
-        v-model="tab"
-        narrow-indicator
-        dense
-        align="justify"
-    >
-      <q-tab class="text-primary" name="mails" icon="apps" label="全部" />
-      <q-tab class="text-orange" name="alarms" icon="event_available" label="待完成" />
-      <q-tab class="text-green" name="movies" icon="task_alt" label="已完成" />
-    </q-tabs>
-    <div class="todo-header fx-between">
-      <div class="text-primary text-lg font-bold">May25</div>
-      <div class="text-secondary">剩余{{todoList.length}}项</div>
-    </div>
-    <div class="todo-main">
-      <q-scroll-area
-          :thumb-style="thumbStyle"
-          style="height: 365px;"
+  <div>
+    <q-spinner-cube v-if="loading.page" class="center" size="5em" color="primary" />
+    <div v-else class="todo-list">
+      <q-tabs
+          v-model="tab"
+          narrow-indicator
+          dense
+          align="justify"
       >
-        <draggable
-            :list="todoList"
-            class="list-group"
-            ghost-class="ghost"
-            :options="{handle: '.cursor-move'}"
-            @start="dragging = true"
-            @end="dragging = false"
+        <q-tab class="text-primary" name="mails" icon="apps" label="全部" />
+        <q-tab class="text-orange" name="alarms" icon="event_available" label="待完成" />
+        <q-tab class="text-green" name="movies" icon="task_alt" label="已完成" />
+      </q-tabs>
+      <div class="todo-header fx-between">
+        <div class="text-primary text-lg font-bold">{{ title }}</div>
+        <div class="text-secondary">剩余{{todoList ? todoList.length: 0}}项</div>
+      </div>
+      <div class="todo-main">
+        <q-scroll-area
+            :thumb-style="thumbStyle"
+            style="height: 365px;"
         >
-          <div  v-for="(i,index) in todoList" :key="index" class="todo-item">
-            <q-checkbox v-model="i.done" />
-            <q-item-section>
-              <div @dblclick="toggleEdit(index)" class="fx-between px-16">
-                <q-item-label v-if="!i.editAble">{{ i.label }}</q-item-label>
-                <q-input v-else v-model="i.label" @blur="toggleEdit(index)" @keyup.enter="toggleEdit(index)" autofocus placeholder="添加任务" />
-                <span>
+          <draggable
+              :list="todoList"
+              class="list-group"
+              ghost-class="ghost"
+              :options="{handle: '.cursor-move'}"
+              @start="dragging = true"
+              @end="dragging = false"
+          >
+            <div  v-for="(i,index) in todoList" :key="index" class="todo-item">
+              <q-checkbox v-model="i.done" />
+              <q-item-section>
+                <div @dblclick="toggleEdit(index)" class="fx-between px-16">
+                  <q-item-label v-if="!i.editAble">{{ i.label }}</q-item-label>
+                  <q-input v-else v-model="i.label" @blur="toggleEdit(index)" @keyup.enter="toggleEdit(index)" autofocus placeholder="添加任务" />
+                  <span>
                   <q-icon class="invisible cursor-move px-8" size="24px" name="drag_handle" />
                   <q-icon class="cursor-pointer invisible" color="red" @click="deleteTask(index)" size="20px" name="delete" />
                 </span>
-              </div>
-            </q-item-section>
-          </div>
-        </draggable>
-      </q-scroll-area>
-    </div>
-    <div class="todo-footer">
-      <q-input @keyup.enter="addTask" v-model="text" label="添加一个任务">
-        <template v-slot:prepend>
-          <q-icon name="add" />
-        </template>
-      </q-input>
+                </div>
+              </q-item-section>
+            </div>
+          </draggable>
+        </q-scroll-area>
+      </div>
+      <div class="todo-footer">
+        <q-input @keyup.enter="addTask" v-model="text" label="添加一个任务">
+          <template v-slot:prepend>
+            <q-icon name="add" />
+          </template>
+        </q-input>
+      </div>
     </div>
   </div>
 </template>
@@ -56,7 +59,8 @@
 <script lang="ts">
 import {Component, Vue, Watch} from "vue-property-decorator"
 import Draggable from 'vuedraggable'
-import {getTodoListApi, updateItemsApi} from "@/api/todo-items"
+import {updateItemsApi} from "@/api/todo-lists"
+import {getTodoDetailApi} from "@/api/todo-lists"
 
 export interface Task {
   label: string
@@ -76,6 +80,10 @@ export default class Folder extends Vue {
   private text = ''
   private tab = 'mails'
   private canUpdate = false
+  private title = ''
+  private loading = {
+    page: true
+  }
 
   private thumbStyle = {
     right: '2px',
@@ -88,8 +96,11 @@ export default class Folder extends Vue {
   private todoList:Task[] = []
 
   created() {
-    getTodoListApi({ list_id: this.listId }).then(value => {
+    getTodoDetailApi(this.listId).then(value => {
       this.todoList = value.data.content
+      document.title = value.data.name
+      this.title = value.data.name
+      this.loading.page = false
     })
   }
 
@@ -105,8 +116,10 @@ export default class Folder extends Vue {
   }
 
   private addTask() {
-    this.todoList.push({ label: this.text, done: false, editAble: false  })
-    this.text = ''
+    if (this.text) {
+      this.todoList.push({ label: this.text, done: false, editAble: false  })
+      this.text = ''
+    }
   }
 
   @Watch('todoList', {deep: false})
