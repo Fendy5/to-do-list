@@ -8,49 +8,138 @@
           dense
           align="justify"
       >
-        <q-tab class="text-primary" name="mails" icon="apps" label="全部" />
-        <q-tab class="text-orange" name="alarms" icon="event_available" label="待完成" />
-        <q-tab class="text-green" name="movies" icon="task_alt" label="已完成" />
+        <q-tab class="text-primary" name="all" icon="apps" label="全部" />
+        <q-tab class="text-orange" name="todo" icon="event_available" label="待完成" />
+        <q-tab class="text-green" name="done" icon="task_alt" label="已完成" />
       </q-tabs>
-      <div class="todo-header fx-between">
-        <div class="text-primary text-lg font-bold">{{ title }}</div>
-        <div class="text-secondary">剩余{{todoList ? todoList.length: 0}}项</div>
-      </div>
-      <div class="todo-main">
-        <q-scroll-area
-            :thumb-style="thumbStyle"
-            style="height: 365px;"
-        >
-          <draggable
-              :list="todoList"
-              class="list-group"
-              ghost-class="ghost"
-              :options="{handle: '.cursor-move'}"
-              @start="dragging = true"
-              @end="dragging = false"
+      <div v-if="tab==='all'" class="all-list">
+        <div class="todo-header fx-between">
+          <div class="text-primary text-lg font-bold">{{ title }}</div>
+          <div class="text-secondary">一共{{ allList.length}}项</div>
+        </div>
+        <div class="todo-main">
+          <q-scroll-area
+              v-if="allList.length"
+              :thumb-style="thumbStyle"
+              style="height: 365px;"
           >
-            <div  v-for="(i,index) in todoList" :key="index" class="todo-item">
-              <q-checkbox v-model="i.done" />
-              <q-item-section>
-                <div @dblclick="toggleEdit(index)" class="fx-between px-16">
-                  <q-item-label v-if="!i.editAble">{{ i.label }}</q-item-label>
-                  <q-input v-else v-model="i.label" @blur="toggleEdit(index)" @keyup.enter="toggleEdit(index)" autofocus placeholder="添加任务" />
-                  <span>
+            <draggable :list="todoList" class="list-group" ghost-class="ghost" handle=".cursor-move" @start="dragging = true" @end="dragging = false">
+              <div  v-for="(i,index) in todoList" :key="index" class="todo-item">
+                <q-checkbox @input="checkboxChange(i.done, index)" v-model="i.done" />
+                <q-item-section>
+                  <div @dblclick="toggleEdit(todoList, index)" class="fx-between px-16">
+                    <q-item-label v-if="!i.editAble">{{ i.label }}</q-item-label>
+                    <q-input v-else v-model="i.label" @blur="toggleEdit(todoList, index)" @keyup.enter="toggleEdit(todoList, index)" autofocus placeholder="添加任务" />
+                    <span>
                   <q-icon class="invisible cursor-move px-8" size="24px" name="drag_handle" />
-                  <q-icon class="cursor-pointer invisible" color="red" @click="deleteTask(index)" size="20px" name="delete" />
+                  <q-icon class="cursor-pointer invisible" color="red" @click="deleteTask(todoList, index)" size="20px" name="delete" />
                 </span>
+                  </div>
+                </q-item-section>
+              </div>
+            </draggable>
+            <div  v-for="(i,index) in doneList" :key="index" class="todo-item">
+              <q-checkbox @input="checkboxChange(i.done, index)" v-model="i.done" />
+              <q-item-section>
+                <div @dblclick="toggleEdit(doneList,index)" class="fx-between px-16">
+                  <q-item-label :class="{'text-secondary': i.done,'text-through': i.done}" v-if="!i.editAble">{{ i.label }}</q-item-label>
+                  <q-input v-else v-model="i.label" @blur="toggleEdit(doneList, index)" @keyup.enter="toggleEdit(doneList,index)" autofocus placeholder="添加任务" />
+                  <span class="text-right">
+                      <q-icon class="cursor-pointer invisible" color="red" @click="deleteTask(doneList, index)" size="20px" name="delete" />
+                    </span>
                 </div>
               </q-item-section>
             </div>
-          </draggable>
-        </q-scroll-area>
+          </q-scroll-area>
+          <div class="text-center pt-32" v-else>
+            <svg-icon  icon-class="no-data" />
+            <p class="text-secondary">还没有数据哦~</p>
+          </div>
+        </div>
+        <div class="todo-footer">
+          <q-input @keyup.enter="addTask" v-model="text" label="添加一个任务">
+            <template v-slot:prepend>
+              <q-icon name="add" />
+            </template>
+          </q-input>
+        </div>
       </div>
-      <div class="todo-footer">
-        <q-input @keyup.enter="addTask" v-model="text" label="添加一个任务">
-          <template v-slot:prepend>
-            <q-icon name="add" />
-          </template>
-        </q-input>
+      <div v-else-if="tab==='todo'" class="">
+        <div class="todo-header fx-between">
+          <div class="text-primary text-lg font-bold">{{ title }}</div>
+          <div class="text-secondary">一共{{ todoList.length}}项</div>
+        </div>
+        <div class="todo-main">
+          <q-scroll-area
+              :thumb-style="thumbStyle"
+              style="height: 365px;"
+          >
+            <draggable v-if="todoList.length" :list="todoList" class="list-group" ghost-class="ghost" handle=".cursor-move" @start="dragging = true" @end="dragging = false">
+              <div  v-for="(i,index) in todoList" :key="index" class="todo-item">
+                <q-checkbox @input="checkboxChange(i.done, index)" v-model="i.done" />
+                <q-item-section>
+                  <div @dblclick="toggleEdit(todoList, index)" class="fx-between px-16">
+                    <q-item-label v-if="!i.editAble">{{ i.label }}</q-item-label>
+                    <q-input v-else v-model="i.label" @blur="toggleEdit(todoList, index)" @keyup.enter="toggleEdit(todoList, index)" autofocus placeholder="添加任务" />
+                    <span>
+                  <q-icon class="invisible cursor-move px-8" size="24px" name="drag_handle" />
+                  <q-icon class="cursor-pointer invisible" color="red" @click="deleteTask(todoList, index)" size="20px" name="delete" />
+                </span>
+                  </div>
+                </q-item-section>
+              </div>
+            </draggable>
+            <div class="text-center pt-32" v-else>
+              <svg-icon  icon-class="no-data" />
+              <p class="text-secondary">还没有数据哦~</p>
+            </div>
+          </q-scroll-area>
+        </div>
+        <div class="todo-footer">
+          <q-input @keyup.enter="addTask" v-model="text" label="添加一个任务">
+            <template v-slot:prepend>
+              <q-icon name="add" />
+            </template>
+          </q-input>
+        </div>
+      </div>
+      <div v-else-if="tab==='done'" class="">
+        <div class="todo-header fx-between">
+          <div class="text-primary text-lg font-bold">{{ title }}</div>
+          <div class="text-secondary">一共{{ doneList.length}}项</div>
+        </div>
+        <div class="todo-main">
+          <q-scroll-area
+              :thumb-style="thumbStyle"
+              style="height: 365px;"
+          >
+            <div v-if="doneList.length">
+              <div  v-for="(i,index) in doneList" :key="index" class="todo-item">
+                <q-checkbox @input="checkboxChange(i.done, index)" v-model="i.done" />
+                <q-item-section>
+                  <div @dblclick="toggleEdit(doneList,index)" class="fx-between px-16">
+                    <q-item-label :class="{'text-secondary': i.done,'text-through': i.done}" v-if="!i.editAble">{{ i.label }}</q-item-label>
+                    <q-input v-else v-model="i.label" @blur="toggleEdit(doneList, index)" @keyup.enter="toggleEdit(doneList,index)" autofocus placeholder="添加任务" />
+                    <span class="text-right">
+                      <q-icon class="cursor-pointer invisible" color="red" @click="deleteTask(doneList, index)" size="20px" name="delete" />
+                    </span>
+                  </div>
+                </q-item-section>
+              </div>
+            </div>
+            <div class="text-center pt-32" v-else>
+              <svg-icon  icon-class="no-data" />
+              <p class="text-secondary">还没有数据哦~</p>
+            </div>
+          </q-scroll-area>
+        </div>
+        <div class="todo-footer">
+          <q-input @keyup.enter="addTask" v-model="text" label="添加一个任务">
+            <template v-slot:prepend>
+              <q-icon name="add" />
+            </template>
+          </q-input>
+        </div>
       </div>
     </div>
   </div>
@@ -59,7 +148,7 @@
 <script lang="ts">
 import {Component, Vue, Watch} from "vue-property-decorator"
 import Draggable from 'vuedraggable'
-import {updateItemsApi} from "@/api/todo-lists"
+import {deleteTodoListsApi, updateItemsApi} from "@/api/todo-lists"
 import {getTodoDetailApi} from "@/api/todo-lists"
 
 export interface Task {
@@ -78,7 +167,7 @@ export interface Task {
 export default class Folder extends Vue {
   private listId = this.$route.params.id
   private text = ''
-  private tab = 'mails'
+  private tab = 'all'
   private canUpdate = false
   private title = ''
   private loading = {
@@ -93,43 +182,76 @@ export default class Folder extends Vue {
     opacity: 0.75
   }
 
+  private allList:Task[] = []
   private todoList:Task[] = []
+  private doneList:Task[] = []
+  private tabs = new Map().set('all',this.allList).set('todo', this.todoList).set('done', this.doneList)
 
   created() {
     getTodoDetailApi(this.listId).then(value => {
-      this.todoList = value.data.content
+      this.allList = value.data.content
+      this.allList.forEach((value: Task) => {
+        if (value.done) {
+          this.doneList.push(value)
+        } else {
+          this.todoList.push(value)
+        }
+      })
       document.title = value.data.name
       this.title = value.data.name
       this.loading.page = false
     })
   }
 
-  private toggleEdit(index: number) {
-    if (this.todoList[index].editAble) {
+  private toggleEdit(list: Task[], index: number) {
+    if (list[index].editAble) {
       this.updateTask()
     }
-    this.todoList[index].editAble = !this.todoList[index].editAble
+    list[index].editAble = !list[index].editAble
   }
 
-  private deleteTask(index: number) {
-    this.todoList.splice(index, 1)
+  private deleteTask(list: Task[], index: number) {
+    this.$q.dialog({
+      title: '警告',
+      message: '是否确认删除该事项？',
+      cancel: '取消',
+      ok: '确定',
+      persistent: true
+    }).onOk(() => {
+      list.splice(index, 1)
+      this.updateTask()
+    })
   }
 
   private addTask() {
     if (this.text) {
-      this.todoList.push({ label: this.text, done: false, editAble: false  })
+      const task = {label: this.text, done: false, editAble: false}
+      this.allList.push(task)
+      this.todoList.push(task)
       this.text = ''
     }
   }
 
-  @Watch('todoList', {deep: false})
+  private checkboxChange(value:boolean, index: number) {
+    if (value) {
+      const task = this.todoList[index]
+      this.doneList.push(task)
+      this.todoList.splice(index, 1)
+    }else {
+      const task = this.doneList[index]
+      this.todoList.push(task)
+      this.doneList.splice(index, 1)
+    }
+  }
+
+  @Watch('allList', {deep: false})
   handleWatch() {
     this.canUpdate && this.updateTask()
     this.canUpdate = true
   }
 
   private updateTask() {
-    updateItemsApi({content: this.todoList}, this.listId)
+    updateItemsApi({content: this.allList}, this.listId)
   }
 
 }
@@ -189,9 +311,6 @@ export default class Folder extends Vue {
     left: unset;
     top: unset;
     transform: unset;
-    .todo-main {
-      height: 365px;
-    }
   }
 }
 .ghost {
