@@ -152,6 +152,7 @@ import {deleteTodoListsApi, updateItemsApi} from "@/api/todo-lists"
 import {getTodoDetailApi} from "@/api/todo-lists"
 
 export interface Task {
+  id: string
   label: string
   done: boolean
   editAble: boolean
@@ -218,14 +219,16 @@ export default class Folder extends Vue {
       ok: '确定',
       persistent: true
     }).onOk(() => {
-      list.splice(index, 1)
-      this.updateTask()
+      const task = list.splice(index, 1)
+      const idx = this.allList.findIndex(value => task[0].id === value.id)
+      this.allList.splice(idx, 1)
     })
   }
 
   private addTask() {
     if (this.text) {
-      const task = {label: this.text, done: false, editAble: false}
+      const randomString = Math.random().toString(36).slice(-8)
+      const task = {label: this.text, done: false, editAble: false, id: randomString}
       this.allList.push(task)
       this.todoList.push(task)
       this.text = ''
