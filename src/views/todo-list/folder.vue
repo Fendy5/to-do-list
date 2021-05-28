@@ -1,32 +1,46 @@
 <template>
   <div>
     <q-spinner-cube v-if="loading" class="center" size="5em" color="primary" />
-    <div class="folder-list">
-      <div v-for="i in todoList" :key="i.id" class="folder">
-        <RouterLink :to="`/list/${i.list_id}`">
-          <svg-icon class="text-primary todo-icon" icon-class="todo-list" />
-          <q-menu :touch-position="true" :context-menu="true" transition-show="rotate" transition-hide="rotate">
-            <q-list dense style="min-width: 100px">
-              <q-item @click="showEdit(i.name)" clickable>
-                <q-item-section>编辑</q-item-section>
-                <q-popup-edit @before-hide="edit(i.list_id, i.name)" v-model="editPopup" content-class="bg-accent text-white">
-                  <q-input dark color="white" v-model="name" dense autofocus counter>
-                    <template v-slot:append>
-                      <q-icon name="edit" />
-                    </template>
-                  </q-input>
-                </q-popup-edit>
-              </q-item>
-              <q-item @click="deleteTodoList(i.list_id)" clickable v-close-popup>
-                <q-item-section>删除</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>属性</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </RouterLink>
-        <span class="text-primary text-center">{{ i.name }}</span>
+    <div v-else>
+      <div class="p-16">
+        <q-breadcrumbs>
+          <q-breadcrumbs-el icon="home" to="/" />
+          <q-breadcrumbs-el :label="`${folder.name}`" icon="folder" />
+        </q-breadcrumbs>
+      </div>
+      <div v-if="todoList.length" class="folder-list">
+        <div v-for="i in todoList" :key="i.id" class="folder">
+          <RouterLink :to="`/list/${i.list_id}`">
+            <svg-icon class="text-primary todo-icon" icon-class="todo-list" />
+            <q-menu :touch-position="true" :context-menu="true" transition-show="rotate" transition-hide="rotate">
+              <q-list dense style="min-width: 100px">
+                <q-item @click="showEdit(i.name)" clickable>
+                  <q-item-section>编辑</q-item-section>
+                  <q-popup-edit @before-hide="edit(i.list_id, i.name)" v-model="editPopup" content-class="bg-accent text-white">
+                    <q-input dark color="white" v-model="name" dense autofocus counter>
+                      <template v-slot:append>
+                        <q-icon name="edit" />
+                      </template>
+                    </q-input>
+                  </q-popup-edit>
+                </q-item>
+                <q-item @click="deleteTodoList(i.list_id)" clickable v-close-popup>
+                  <q-item-section>删除</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup>
+                  <q-item-section>属性</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </RouterLink>
+          <span class="text-primary text-center">{{ i.name }}</span>
+        </div>
+      </div>
+      <div v-else class="center">
+        <div class="text-center" >
+          <svg-icon  icon-class="no-data" />
+          <p class="text-secondary">还没有数据哦~</p>
+        </div>
       </div>
       <page-sticky @click="addTodoList" />
     </div>
@@ -46,6 +60,9 @@ export default class Folder extends Vue {
   private todoList = []
   private name = ''
   private editPopup = ''
+  private folder = {
+    name: '文件夹'
+  }
   private loading = true
 
   created() {
@@ -80,6 +97,7 @@ export default class Folder extends Vue {
   private getTodoList() {
     getTodoListsApi({folder_id: this.$route.params.id}).then(value => {
       this.todoList = value.data.todoList
+      this.folder = value.data.folder
       document.title = value.data.folder.name
       this.loading = false
     })

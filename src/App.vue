@@ -11,7 +11,15 @@ import { Vue, Component } from 'vue-property-decorator'
   name: 'App'
 })
 
-export default class extends Vue {}
+export default class extends Vue {
+  created() {
+    window.onbeforeunload = () => {
+      localStorage.setItem('history', this.$route.path)
+      localStorage.setItem('load_history', 'true')
+    }
+    localStorage.setItem('load_history', 'false')
+  }
+}
 </script>
 
 <style lang="scss">
