@@ -12,9 +12,7 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
     } else {
       const history = localStorage.getItem('history')
       const load_history = localStorage.getItem('load_history')
-      console.log(load_history)
       if ((to.path==='/home'||to.path==='/') && history && history!=='/' && load_history==='true') {
-        console.log('/home/fals')
         next(history)
       } else {
         next()

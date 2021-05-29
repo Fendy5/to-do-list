@@ -37,10 +37,10 @@
     <q-img class="absolute-top" src="https://image.fendy5.cn/s/GKbBFeoLIqH1sfX4/0.25" style="height: 150px">
       <div class="absolute-bottom bg-transparent">
         <q-avatar size="56px" class="q-mb-sm">
-          <img src="https://image.fendy5.cn/s/7pwrTAuGZDvXdIEe/0.1">
+          <img :src="avatar">
         </q-avatar>
-        <div class="text-weight-bold">Fendy</div>
-        <div>zf@fendy5.cn</div>
+        <div class="text-weight-bold">{{ name }}</div>
+        <div>{{ email }}</div>
       </div>
     </q-img>
   </q-drawer>
@@ -49,6 +49,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import {AppModule} from "@/store/modules/app"
+import { UserModule } from "@/store/modules/user"
 
 @Component({
   name: 'Sidebar'
@@ -58,6 +59,18 @@ export default class extends Vue {
 
   get sidebar() {
     return  AppModule.sidebar
+  }
+
+  get avatar() {
+    return UserModule.avatar
+  }
+
+  get email() {
+    return UserModule.email
+  }
+
+  get name() {
+    return UserModule.name
   }
 
   private toggleSideBar() {

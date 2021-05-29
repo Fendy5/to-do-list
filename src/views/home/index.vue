@@ -36,18 +36,15 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import PageSticky from "@/components/PageSticky.vue"
-import HelloWorld from '@/components/HelloWorld.vue'
 import {addFolderApi, deleteFoldersApi, getFoldersApi, updateFoldersApi} from "@/api/folders"
 
 @Component({
   components: {
-    HelloWorld,
     PageSticky
   }
 })
 export default class Home extends Vue {
   private folderName = ''
-  private prompt = false
   private editPopup = ''
   private loading = true
   private folderList = []

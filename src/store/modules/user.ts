@@ -1,23 +1,29 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
 import { getToken, setToken, removeToken } from '@/utils/cookies'
 import store from '@/store'
-import {login} from "@/api/users"
+import {getUserInfo, login} from "@/api/users"
 
-export interface IUserState {
-  token: string
+export interface UserInfo {
   name: string
   avatar: string
   introduction: string
   email: string
 }
 
+export interface IUserState {
+  token: string
+  user: UserInfo
+}
+
 @Module({dynamic: true, store, name: 'user'})
 class User extends VuexModule implements IUserState {
   public token = getToken() || ''
-  public name = ''
-  public avatar = ''
-  public introduction = ''
-  public email = ''
+  public user = {
+    name: '',
+    avatar: '',
+    introduction: '',
+    email: ''
+  }
 
   @Mutation
   private SET_TOKEN(token: string) {
@@ -25,23 +31,8 @@ class User extends VuexModule implements IUserState {
   }
 
   @Mutation
-  private SET_NAME(name: string) {
-    this.name = name
-  }
-
-  @Mutation
-  private SET_AVATAR(avatar: string) {
-    this.avatar = avatar
-  }
-
-  @Mutation
-  private SET_INTRODUCTION(introduction: string) {
-    this.introduction = introduction
-  }
-
-  @Mutation
-  private SET_EMAIL(email: string) {
-    this.email = email
+  private SET_USER(user: UserInfo) {
+    this.user = user
   }
 
   @Action
@@ -61,6 +52,13 @@ class User extends VuexModule implements IUserState {
     }catch (e) {
 
     }
+  }
+
+  @Action
+  public async GetUserInfo() {
+    getUserInfo().then(value => {
+      console.log(value)
+    })
   }
 
 }

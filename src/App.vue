@@ -13,12 +13,14 @@ import { Vue, Component } from 'vue-property-decorator'
 
 export default class extends Vue {
   created() {
+    localStorage.setItem('load_history', 'false')
     window.onbeforeunload = () => {
+      console.log('onbeforeunload')
       localStorage.setItem('history', this.$route.path)
       localStorage.setItem('load_history', 'true')
     }
-    localStorage.setItem('load_history', 'false')
   }
+
 }
 </script>
 
