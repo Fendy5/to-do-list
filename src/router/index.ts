@@ -25,7 +25,7 @@ const routes: Array<RouteConfig> = [
       {
         path: '/user',
         name: 'User',
-        meta: { title: '用户中心' },
+        meta: { title: '个人信息' },
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/index.vue')
       },
       {

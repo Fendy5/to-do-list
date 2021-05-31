@@ -29,7 +29,7 @@
           <q-icon name="account_circle" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>个人中心</q-item-label>
+          <q-item-label>个人信息</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
