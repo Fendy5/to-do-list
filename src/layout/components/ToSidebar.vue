@@ -57,20 +57,24 @@ import { UserModule } from "@/store/modules/user"
 
 export default class extends Vue {
 
+  created() {
+    UserModule.GetUserInfo()
+  }
+
   get sidebar() {
     return  AppModule.sidebar
   }
 
   get avatar() {
-    return UserModule.avatar
+    return UserModule.user.avatar
   }
 
   get email() {
-    return UserModule.email
+    return UserModule.user.email
   }
 
   get name() {
-    return UserModule.name
+    return UserModule.user.name
   }
 
   private toggleSideBar() {

@@ -57,7 +57,13 @@ class User extends VuexModule implements IUserState {
   @Action
   public async GetUserInfo() {
     getUserInfo().then(value => {
-      console.log(value)
+      const user = {
+        name: value.data.nickname,
+        introduction: value.data.introduction,
+        avatar: value.data.avatar,
+        email: value.data.email
+      }
+      this.SET_USER(user)
     })
   }
 
