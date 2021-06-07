@@ -16,14 +16,14 @@
 <!--          <q-item-label caption>quasar.dev</q-item-label>-->
         </q-item-section>
       </q-item>
-      <q-item clickable tag="a" to="/data-statistics">
-        <q-item-section avatar>
-          <q-icon name="trending_up" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>数据统计</q-item-label>
-        </q-item-section>
-      </q-item>
+<!--      <q-item clickable tag="a" to="/data-statistics">-->
+<!--        <q-item-section avatar>-->
+<!--          <q-icon name="trending_up" />-->
+<!--        </q-item-section>-->
+<!--        <q-item-section>-->
+<!--          <q-item-label>数据统计</q-item-label>-->
+<!--        </q-item-section>-->
+<!--      </q-item>-->
       <q-item clickable tag="a" to="/user">
         <q-item-section avatar>
           <q-icon name="account_circle" />
@@ -39,7 +39,7 @@
         <q-avatar size="56px" class="q-mb-sm">
           <img :src="avatar">
         </q-avatar>
-        <div class="text-weight-bold">{{ name }}</div>
+        <div class="text-weight-bold">{{ nickname }}</div>
         <div>{{ email }}</div>
       </div>
     </q-img>
@@ -58,7 +58,11 @@ import { UserModule } from "@/store/modules/user"
 export default class extends Vue {
 
   created() {
-    UserModule.GetUserInfo()
+    this.token && UserModule.GetUserInfo()
+  }
+
+  get token() {
+    return UserModule.token
   }
 
   get sidebar() {
@@ -73,8 +77,8 @@ export default class extends Vue {
     return UserModule.user.email
   }
 
-  get name() {
-    return UserModule.user.name
+  get nickname() {
+    return UserModule.user.nickname
   }
 
   private toggleSideBar() {

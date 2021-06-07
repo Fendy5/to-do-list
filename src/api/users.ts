@@ -19,3 +19,25 @@ export const getUserInfo = () =>
     url: '/api/v1/users/info',
     method: 'get'
   })
+
+export const uploadAvatarApi = (data: any) =>
+  request({
+    baseURL: '/image-api',
+    url: '/api/v1/upload',
+    method: 'post',
+    data
+  })
+
+export const updateAvatarApi = (data: any) =>
+  request({
+    url: '/api/v1/users/avatar',
+    method: 'post',
+    data
+  })
+
+export const updateUserApi = (data: any) =>
+  request({
+    url: '/api/v1/users',
+    method: 'post',
+    data
+  })

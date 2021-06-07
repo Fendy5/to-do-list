@@ -1,8 +1,11 @@
-$widths: 14,25,30,150;
+$widths: 14,25,30,250;
 @each $i in $widths{
   .wh-#{$i} {
     width: $i+px !important;
     height: $i+px !important;
+  }
+  .w-#{$i} {
+    width: $i+px !important;
   }
 }
 .w-full {
@@ -109,4 +112,14 @@ $paddings: 8,16,24,32;
 }
 .text-through {
   text-decoration: line-through;
+}
+.block {
+  display: block;
+}
+.grid-half {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+.lh-56 {
+  line-height: 56px;
 }

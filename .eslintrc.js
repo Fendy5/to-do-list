@@ -7,6 +7,8 @@ module.exports = {
   extends: [
     'plugin:vue/essential',
     'prettier',
+    // "plugin:prettier/standard",
+    // '@vue/standard',
     '@vue/typescript/recommended'
   ],
   parserOptions: {

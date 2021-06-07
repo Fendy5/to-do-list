@@ -31,6 +31,13 @@ module.exports = {
         pathRewrite: {
           '^/dev-api': ''
         }
+      },
+      '/image-api': {
+        target: 'https://image.fendy5.cn',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/image-api': ''
+        }
       }
     }
   },
