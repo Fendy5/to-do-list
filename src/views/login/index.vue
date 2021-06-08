@@ -58,6 +58,7 @@ export default class Login extends mixins(loginMixin) {
   created() {
     if (isWechat()) {
       location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
+      // location.href = `http://10.1.143.65:7026/api/v1/wechat/login`
     }
   }
 

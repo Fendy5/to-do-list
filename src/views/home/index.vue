@@ -37,6 +37,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import PageSticky from "@/components/PageSticky.vue"
 import {addFolderApi, deleteFoldersApi, getFoldersApi, updateFoldersApi} from "@/api/folders"
+import {UserModule} from "@/store/modules/user"
 
 @Component({
   components: {

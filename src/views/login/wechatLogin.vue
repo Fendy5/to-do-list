@@ -14,7 +14,7 @@ export default class WechatLogin extends Vue {
 
   created() {
     this.token = this.$route.query.token
-    UserModule.SetToken(this.$route.params.token)
+    UserModule.SetToken(this.$route.query.token)
     this.$router.push('/')
   }
 }

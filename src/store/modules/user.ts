@@ -55,7 +55,7 @@ class User extends VuexModule implements IUserState {
   }
 
   @Action
-  public SetToken(token: string) {
+  public SetToken(token: any) {
     setToken(token)
     this.SET_TOKEN(token)
   }
