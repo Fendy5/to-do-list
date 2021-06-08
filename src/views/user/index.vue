@@ -157,7 +157,10 @@ export default class User extends Vue {
     padding: 0 24px 24px 24px;
   }
   .avatar {
-    margin-top: 24px;
+    padding-top: 24px;
+    img{
+      object-fit: fill;
+    }
   }
 }
 </style>
