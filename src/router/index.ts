@@ -31,12 +31,12 @@ const routes: Array<RouteConfig> = [
       {
         path: '/folder/:id',
         name: 'Folder',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/todo-list/folder.vue')
+        component: () => import(/* webpackChunkName: "folder" */ '@/views/todo-list/folder.vue')
       },
       {
         path: '/list/:id',
         name: 'ToDoList',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/todo-list/index.vue')
+        component: () => import(/* webpackChunkName: "to-do-lis" */ '@/views/todo-list/index.vue')
       }
     ]
   },
@@ -44,6 +44,11 @@ const routes: Array<RouteConfig> = [
     path: '/login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "login" */ '@/views/login/index.vue')
+  },
+  {
+    path: '/wechat-login',
+    name: 'WechatLogin',
+    component: () => import(/* webpackChunkName: "wechat-login" */ '@/views/login/wechatLogin.vue')
   },
   {
     path: '/register',

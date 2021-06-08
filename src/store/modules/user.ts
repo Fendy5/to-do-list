@@ -55,6 +55,12 @@ class User extends VuexModule implements IUserState {
   }
 
   @Action
+  public SetToken(token: string) {
+    setToken(token)
+    this.SET_TOKEN(token)
+  }
+
+  @Action
   public async GetUserInfo() {
     getUserInfo().then(value => {
       const user = {

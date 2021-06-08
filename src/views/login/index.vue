@@ -45,6 +45,7 @@ import loginMixin from '@/mixins/login'
 import {UserModule} from "@/store/modules/user"
 import {Dictionary} from "vue-router/types/router"
 import {Route} from "vue-router"
+import {isWechat} from "@/utils/validate"
 
 @Component({
   name: 'Login'
@@ -53,6 +54,10 @@ import {Route} from "vue-router"
 export default class Login extends mixins(loginMixin) {
   private redirect?: string
   private otherQuery: Dictionary<string> = {}
+
+  created() {
+    location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
+  }
 
   private async handleLogin() {
     await UserModule.Login(this.loginForm)

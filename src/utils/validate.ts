@@ -6,3 +6,7 @@ export const isValidateEmail = (email: string) => {
 export const isValidatePassword = (password: string) => {
   return password.length >= 8
 }
+
+export const isWechat = () => {
+  return navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1
+}

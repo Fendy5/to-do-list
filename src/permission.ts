@@ -2,7 +2,7 @@ import router from './router'
 import { Route } from 'vue-router'
 import { UserModule } from '@/store/modules/user'
 
-const whiteList = ['/login', '/register']
+const whiteList = ['/login', '/register','/wechat-login']
 
 router.beforeEach(async(to: Route, _: Route, next: any) => {
   to.meta.title && (document.title = to.meta.title)
