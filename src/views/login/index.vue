@@ -56,7 +56,9 @@ export default class Login extends mixins(loginMixin) {
   private otherQuery: Dictionary<string> = {}
 
   created() {
-    location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
+    if (isWechat()) {
+      location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
+    }
   }
 
   private async handleLogin() {

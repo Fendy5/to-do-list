@@ -10,10 +10,10 @@ import {UserModule} from "@/store/modules/user"
   name: 'WechatLogin'
 })
 export default class WechatLogin extends Vue {
-  private token = ''
+  private token:any = ''
 
   created() {
-    this.token = this.$route.params.token
+    this.token = this.$route.query.token
     UserModule.SetToken(this.$route.params.token)
     this.$router.push('/')
   }
