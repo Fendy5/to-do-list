@@ -26,7 +26,7 @@ module.exports = {
     proxy: {
       // 开发环境代理访问接口
       '/dev-api': {
-        target: 'http://localhost:7026',
+        target: 'https://todo.Fendy5.cn',
         changeOrigin: true,
         pathRewrite: {
           '^/dev-api': ''

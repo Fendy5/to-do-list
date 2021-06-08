@@ -1,7 +1,7 @@
 <template>
   <div class="user center shadow">
     <q-avatar
-      class="block mx-auto mb-32 cursor-pointer"
+      class="avatar block mx-auto mb-32 cursor-pointer"
       size="96px"
       @click="changeAvatar"
     >
@@ -155,6 +155,9 @@ export default class User extends Vue {
     top: unset;
     transform: unset;
     padding: 0 24px 24px 24px;
+  }
+  .avatar {
+    margin-top: 24px;
   }
 }
 </style>
