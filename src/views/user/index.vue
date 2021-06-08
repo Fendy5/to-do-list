@@ -18,8 +18,8 @@
         <div class="">{{ user.email }}</div>
       </div>
       <div class="user-item">
-        <div class="text-secondary">座右铭</div>
-        <div class="">计划好生活的每一件小事~</div>
+        <div class="text-secondary">微信</div>
+        <div class="">{{ user.openid?'已绑定':'未绑定' }}</div>
       </div>
       <div class="btn text-center">
         <q-btn
@@ -32,11 +32,11 @@
     </div>
     <div v-else>
       <div class="user-item">
-        <div class="text-secondary lh-56">昵称</div>
+        <div class="text-secondary lh-42">昵称</div>
         <q-input placeholder="请输入昵称" v-model="form.nickname"/>
       </div>
       <div class="user-item">
-        <div class="text-secondary lh-56">邮箱</div>
+        <div class="text-secondary lh-42">邮箱</div>
         <q-input placeholder="请输入邮箱" v-model="form.email"/>
       </div>
       <div class="btn fx-between">
@@ -69,14 +69,14 @@ import {UserModule} from "@/store/modules/user"
 export default class User extends Vue {
   private form = {
     nickname: '',
-    introduction: '',
+    openid: '',
     avatar: '',
     email: ''
   }
   private user = {
     nickname: '',
     avatar: '',
-    introduction: '',
+    openid: '',
     email: ''
   }
   private edit = 0
@@ -97,7 +97,7 @@ export default class User extends Vue {
   }
 
   saveUser() {
-    updateUserApi(this.form).then(value => {
+    updateUserApi(this.form).then( () => {
       this.initPage()
       this.edit = 0
       UserModule.SetUser(this.form)
@@ -162,5 +162,8 @@ export default class User extends Vue {
       object-fit: fill;
     }
   }
+}
+::v-deep .q-field__control {
+  height: 42px;
 }
 </style>

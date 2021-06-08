@@ -6,7 +6,7 @@ import {getUserInfo, login} from "@/api/users"
 export interface UserInfo {
   nickname: string
   avatar: string
-  introduction: string
+  openid: string
   email: string
 }
 
@@ -21,7 +21,7 @@ class User extends VuexModule implements IUserState {
   public user = {
     nickname: '',
     avatar: '',
-    introduction: '',
+    openid: '',
     email: ''
   }
 
@@ -65,7 +65,7 @@ class User extends VuexModule implements IUserState {
     getUserInfo().then(value => {
       const user = {
         nickname: value.data.nickname,
-        introduction: value.data.introduction,
+        openid: value.data.openid,
         avatar: value.data.avatar,
         email: value.data.email
       }

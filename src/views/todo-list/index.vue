@@ -79,14 +79,14 @@
         <div v-else-if="tab==='todo'" class="">
           <div class="todo-header fx-between">
             <div class="text-primary text-lg font-bold">{{ title }}</div>
-<!--            <div class="text-secondary">一共{{ todoList.length}}项</div>-->
+            <div class="text-secondary">一共{{ todoAmount }}项</div>
           </div>
           <div class="todo-main">
             <q-scroll-area
                 :thumb-style="thumbStyle"
                 style="height: 365px;"
             >
-              <draggable v-if="allList.length" :list="allList" class="list-group" ghost-class="ghost" handle=".cursor-move" @start="dragging = true" @end="dragging = false">
+              <draggable v-if="todoAmount!==0" :list="allList" class="list-group" ghost-class="ghost" handle=".cursor-move" @start="dragging = true" @end="dragging = false">
                 <div  v-for="(i,index) in allList" :key="index">
                   <div v-if="!i.done" class="todo-item">
                     <q-checkbox @input="changeInput" v-model="i.done" />
@@ -120,14 +120,14 @@
         <div v-else-if="tab==='done'" class="">
           <div class="todo-header fx-between">
             <div class="text-primary text-lg font-bold">{{ title }}</div>
-<!--            <div class="text-secondary">一共{{ doneList.length}}项</div>-->
+            <div class="text-secondary">一共{{ allList.length-todoAmount }}项</div>
           </div>
           <div class="todo-main">
             <q-scroll-area
                 :thumb-style="thumbStyle"
                 style="height: 365px;"
             >
-              <div v-if="allList.length">
+              <div v-if="allList.length-todoAmount!==0">
                 <div  v-for="(i,index) in allList" :key="index" >
                   <div v-if="i.done" class="todo-item">
                     <q-checkbox @input="changeInput" v-model="i.done" />
@@ -199,6 +199,11 @@ export default class Folder extends Vue {
     backgroundColor: '#a166ef',
     width: '5px',
     opacity: 0.75
+  }
+
+  get todoAmount() {
+    const todoList = this.allList.filter(value => !value.done)
+    return todoList.length
   }
 
   private allList:Task[] = []
