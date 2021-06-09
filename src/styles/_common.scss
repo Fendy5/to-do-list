@@ -91,6 +91,11 @@ $paddings: 8,16,24,32;
   align-items: center;
   justify-content: space-between;
 }
+.fx-around {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
 .relative {
   position: relative;
 }

@@ -21,12 +21,18 @@
         <div class="text-secondary">微信</div>
         <div class="">{{ user.openid?'已绑定':'未绑定' }}</div>
       </div>
-      <div class="btn text-center">
+      <div class="btn fx-between">
         <q-btn
           outline
           @click="changeEdit(1)"
           style="color: goldenrod;"
           label="修改信息"
+        />
+        <q-btn
+            outline
+            @click="logout"
+            style="color: indianred;"
+            label="退出登录"
         />
       </div>
     </div>
@@ -40,17 +46,17 @@
         <q-input placeholder="请输入邮箱" v-model="form.email"/>
       </div>
       <div class="input-item">
+        <div class="text-secondary lh-42">密码</div>
+        <q-input placeholder="请输入密码" type="password" v-model="form.password"/>
+      </div>
+      <div class="input-item">
         <div class="text-secondary lh-42">微信</div>
         <div v-if="user.openid" class="lh-42">已绑定</div>
         <div v-else class="lh-42 text-primary">
           <span class="cursor-pointer">绑定</span>
         </div>
       </div>
-      <div class="input-item">
-        <div class="text-secondary lh-42">密码</div>
-        <q-input placeholder="请输入密码" type="password" v-model="form.password"/>
-      </div>
-      <div class="btn fx-between">
+      <div class="btn fx-around">
         <q-btn
             outline
             style="color: #a5a2a2;"
@@ -72,6 +78,7 @@
 import {Component, Vue} from "vue-property-decorator"
 import {getUserInfo, updateAvatarApi, updateUserApi, uploadAvatarApi} from "@/api/users"
 import {UserModule} from "@/store/modules/user"
+import {deleteTodoListsApi} from "@/api/todo-lists"
 
 @Component({
   name: 'User'
@@ -95,6 +102,19 @@ export default class User extends Vue {
 
   created() {
     this.initPage()
+  }
+
+  logout() {
+    this.$q.dialog({
+      title: '警告',
+      message: '是否确认退出？',
+      cancel: '取消',
+      ok: '确定',
+      persistent: true
+    }).onOk(() => {
+      UserModule.ResetToken()
+      this.$router.push('/login')
+    })
   }
 
   initPage() {
@@ -146,7 +166,7 @@ export default class User extends Vue {
   height: 560px;
   padding: 32px 24px;
   .btn {
-    width: 150px;
+    width: 250px;
     position: absolute;
     bottom: 48px;
     left: 50%;
