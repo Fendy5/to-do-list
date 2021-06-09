@@ -31,13 +31,24 @@
       </div>
     </div>
     <div v-else>
-      <div class="user-item">
+      <div class="input-item">
         <div class="text-secondary lh-42">昵称</div>
         <q-input placeholder="请输入昵称" v-model="form.nickname"/>
       </div>
-      <div class="user-item">
+      <div class="input-item">
         <div class="text-secondary lh-42">邮箱</div>
         <q-input placeholder="请输入邮箱" v-model="form.email"/>
+      </div>
+      <div class="input-item">
+        <div class="text-secondary lh-42">微信</div>
+        <div v-if="user.openid" class="lh-42">已绑定</div>
+        <div v-else class="lh-42 text-primary">
+          <span class="cursor-pointer">绑定</span>
+        </div>
+      </div>
+      <div class="input-item">
+        <div class="text-secondary lh-42">密码</div>
+        <q-input placeholder="请输入密码" type="password" v-model="form.password"/>
       </div>
       <div class="btn fx-between">
         <q-btn
@@ -71,6 +82,7 @@ export default class User extends Vue {
     nickname: '',
     openid: '',
     avatar: '',
+    password: '********',
     email: ''
   }
   private user = {
@@ -89,6 +101,7 @@ export default class User extends Vue {
     getUserInfo().then(value => {
       this.user = value.data
       this.form = value.data
+      this.form['password'] = '********'
     })
   }
 
@@ -141,10 +154,16 @@ export default class User extends Vue {
   }
 }
 .user-item {
-  @extend .grid-half;
+  @extend .grid-1_1;
   @extend .w-250;
   @extend .mx-auto;
   @extend .py-24
+}
+.input-item {
+  @extend .grid-1_2;
+  @extend .w-250;
+  @extend .mx-auto;
+  @extend .py-8
 }
 @media (max-width: 500px) {
   .user {

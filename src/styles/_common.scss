@@ -116,9 +116,13 @@ $paddings: 8,16,24,32;
 .block {
   display: block;
 }
-.grid-half {
+.grid-1_2 {
   display: grid;
   grid-template-columns: 1fr 2fr;
+}
+.grid-1_1 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 .lh-56 {
   line-height: 56px;
