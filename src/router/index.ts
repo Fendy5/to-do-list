@@ -51,6 +51,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "wechat-login" */ '@/views/login/wechatLogin.vue')
   },
   {
+    path: '/bind-wechat',
+    name: 'BindWechat',
+    component: () => import(/* webpackChunkName: "bind-wechat" */ '@/views/bind-wechat/index.vue')
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import(/* webpackChunkName: "register" */ '@/views/login/register.vue')

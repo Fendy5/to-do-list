@@ -53,7 +53,7 @@
         <div class="text-secondary lh-42">微信</div>
         <div v-if="user.openid" class="lh-42">已绑定</div>
         <div v-else class="lh-42 text-primary">
-          <span class="cursor-pointer">绑定</span>
+          <span @click="bindWechat" class="cursor-pointer">绑定</span>
         </div>
       </div>
       <div class="btn fx-around">
@@ -71,6 +71,11 @@
         />
       </div>
     </div>
+    <q-dialog transition-show="flip-down" transition-hide="flip-up" v-model="dialog">
+      <q-card class="p-24">
+        <div ref="qrcode"></div>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -78,7 +83,6 @@
 import {Component, Vue} from "vue-property-decorator"
 import {getUserInfo, updateAvatarApi, updateUserApi, uploadAvatarApi} from "@/api/users"
 import {UserModule} from "@/store/modules/user"
-import {deleteTodoListsApi} from "@/api/todo-lists"
 
 @Component({
   name: 'User'
@@ -99,6 +103,15 @@ export default class User extends Vue {
     email: ''
   }
   private edit = 0
+  private dialog = false
+
+  bindWechat() {
+    const QRCode = require('qrcodejs2')
+    this.dialog = true
+    this.$nextTick(() => {
+      new QRCode(this.$refs.qrcode, `https://todo.fendy5.cn/api/v1/wechat/login?email=${this.user.email}&bind=1`)
+    })
+  }
 
   created() {
     this.initPage()
