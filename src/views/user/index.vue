@@ -22,18 +22,8 @@
         <div class="">{{ user.openid?'已绑定':'未绑定' }}</div>
       </div>
       <div class="btn fx-between">
-        <q-btn
-          outline
-          @click="changeEdit(1)"
-          style="color: goldenrod;"
-          label="修改信息"
-        />
-        <q-btn
-            outline
-            @click="logout"
-            style="color: indianred;"
-            label="退出登录"
-        />
+        <q-btn outline @click="changeEdit(1)" style="color: goldenrod;" label="修改信息"/>
+        <q-btn outline @click="logout" style="color: indianred;" label="退出登录"/>
       </div>
     </div>
     <div v-else>

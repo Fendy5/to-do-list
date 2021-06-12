@@ -55,12 +55,12 @@ export default class Login extends mixins(loginMixin) {
   private redirect?: string
   private otherQuery: Dictionary<string> = {}
 
-  created() {
-    if (isWechat()) {
-      location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
-      // location.href = `http://10.1.143.65:7026/api/v1/wechat/login`
-    }
-  }
+  // created() {
+  //   if (isWechat()) {
+  //     location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
+  //     // location.href = `http://10.1.143.65:7026/api/v1/wechat/login`
+  //   }
+  // }
 
   private async handleLogin() {
     await UserModule.Login(this.loginForm)
