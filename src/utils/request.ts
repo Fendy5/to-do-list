@@ -27,12 +27,13 @@ service.interceptors.response.use(
   (response) => {
     const res = response.data
     // code-0,请求成功；code-1，未登录；code-2,服务器返回失败信息
-    if (res.code === 0 && res.message) {
-      Notify.create({
+    if (res.code === 0) {
+      res.message && Notify.create({
         type: 'positive',
         position: 'top',
         message: res.message
       })
+      return res
     } else if (res.code === 1 || res.code === 2) {
       Notify.create({
         type: 'negative',
@@ -45,9 +46,8 @@ service.interceptors.response.use(
           location.reload()
         }, 1000)
       }
-      // return Promise.reject(res)
+      return Promise.reject(res)
     }
-    return res
   },
   (error) => {
     Notify.create({
