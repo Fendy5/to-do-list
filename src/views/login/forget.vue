@@ -5,8 +5,8 @@
       <span class="pl-8 font-bold text-lg text-primary">To Do List</span>
     </div>
     <div class="login shadow">
-      <h3 class="text-primary text-center">注册</h3>
-      <q-form @submit="handleRegister" class="login-form mx-auto">
+      <h3 class="text-primary text-center">忘记密码</h3>
+      <q-form @submit="handleForget" class="login-form mx-auto">
         <div class="pb-32">
           <q-input :rules="[val => val && val.length > 0 || '请输入邮箱',validateEmail]" color="primary" v-model="loginForm.email" label="邮箱">
             <template v-slot:prepend>
@@ -14,16 +14,9 @@
             </template>
           </q-input>
         </div>
-        <div class="pb-32">
-          <q-input color="primary" :rules="[val => val && val.length>=8 || '密码必须大于或者等于8位']" type="password" v-model="loginForm.password" label="密码">
-            <template v-slot:prepend>
-              <q-icon name="password" />
-            </template>
-          </q-input>
-        </div>
-        <div class="pb-32 pt-16">
+        <div class="py-32">
           <q-btn type="submit" class="w-full" color="primary">
-            注册
+            找回密码
             <template v-slot:loading>
               <q-spinner-radio />
             </template>
@@ -39,19 +32,16 @@
 </template>
 
 <script lang="ts">
+import { mixins } from 'vue-class-component'
 import {Component} from "vue-property-decorator"
 import loginMixin from '@/mixins/login'
-import { mixins } from 'vue-class-component'
-import {register} from "@/api/users"
 
 @Component({
-  name: 'Register'
+  name: 'Forget'
 })
-
-export default class Login extends mixins(loginMixin) {
-  private async handleRegister() {
-    const { data } = await register(this.loginForm)
-    data && await this.$router.push('/login')
+export default class Forget extends mixins(loginMixin) {
+  private handleForget() {
+    // todo
   }
 }
 </script>

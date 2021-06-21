@@ -17,10 +17,11 @@ export default class extends Vue {
 
   public validateEmail = () => {
     if (!isValidateEmail(this.loginForm.email)) {
-      this.$q.notify({
-        type: 'negative',
-        message: `邮箱格式不正确`
-      })
+      return '邮箱格式不正确'
+      // this.$q.notify({
+      //   type: 'negative',
+      //   message: `邮箱格式不正确`
+      // })
     }
   }
 

@@ -56,6 +56,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "bind-wechat" */ '@/views/bind-wechat/index.vue')
   },
   {
+    path: '/forget',
+    name: 'Forget',
+    component: () => import(/* webpackChunkName: "forget" */ '@/views/login/forget.vue')
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import(/* webpackChunkName: "register" */ '@/views/login/register.vue')

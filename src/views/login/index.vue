@@ -10,29 +10,29 @@
         <q-btn @click="wechatLogin" class="w-full mb-32" color="primary">微信登录</q-btn>
         <q-btn @click="isWechat=false" class="w-full mb-32" style="color: goldenrod;" outline>账号登录</q-btn>
       </div>
-      <div v-else class="login-form mx-auto">
+      <q-form  @submit="handleLogin" v-else class="login-form mx-auto">
         <div class="pb-32">
-          <q-input color="primary" @blur="validateEmail" v-model="loginForm.email" label="邮箱">
+          <q-input  :rules="[val => val && val.length > 0 || '请输入邮箱',validateEmail]" color="primary" v-model="loginForm.email" label="邮箱">
             <template v-slot:prepend>
               <q-icon name="email" />
             </template>
           </q-input>
         </div>
         <div class="pb-32">
-          <q-input color="primary" type="password" v-model="loginForm.password" label="密码">
+          <q-input :rules="[val => val && val.length>=8 || '密码必须大于或者等于8位']" color="primary" type="password" v-model="loginForm.password" label="密码">
             <template v-slot:prepend>
               <q-icon name="password" />
             </template>
           </q-input>
         </div>
         <div class="pb-32 pt-16">
-          <q-btn :loading="loading" @click="handleLogin" class="w-full" color="primary">登录</q-btn>
+          <q-btn :loading="loading" type="submit" class="w-full" color="primary">登录</q-btn>
         </div>
         <div class="fx-between">
           <RouterLink to="/register" class="text-primary">免费注册</RouterLink>
           <RouterLink to="/forget" class="text-secondary">忘记密码</RouterLink>
         </div>
-      </div>
+      </q-form>
     </div>
   </div>
 </template>
@@ -53,13 +53,6 @@ import { isWechat } from "@/utils/validate"
 export default class Login extends mixins(loginMixin) {
   private redirect?: string
   private otherQuery: Dictionary<string> = {}
-
-  created() {
-    if (this.isWechat) {
-      // location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
-      // location.href = `http://10.1.143.65:7026/api/v1/wechat/login`
-    }
-  }
 
   wechatLogin() {
     location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
@@ -104,27 +97,5 @@ export default class Login extends mixins(loginMixin) {
 </script>
 
 <style lang="scss" scoped>
-.login {
-  width: 500px;
-  height: 560px;
-  background-color: #fff;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 8px;
-  padding: 32px;
-  .login-form {
-    width: 350px;
-  }
-}
-@media (max-width: 500px) {
-  .login {
-    height: 100%;
-    width: 100%;
-    .login-form {
-      width: 90%;
-    }
-  }
-}
+@import "./scss/index";
 </style>
