@@ -6,7 +6,11 @@
     </div>
     <div class="login shadow">
       <h3 class="text-primary text-center">登录</h3>
-      <div class="login-form mx-auto">
+      <div class="pt-32" v-if="isWechat">
+        <q-btn @click="wechatLogin" class="w-full mb-32" color="primary">微信登录</q-btn>
+        <q-btn @click="isWechat=false" class="w-full mb-32" style="color: goldenrod;" outline>账号登录</q-btn>
+      </div>
+      <div v-else class="login-form mx-auto">
         <div class="pb-32">
           <q-input color="primary" @blur="validateEmail" v-model="loginForm.email" label="邮箱">
             <template v-slot:prepend>
@@ -22,12 +26,7 @@
           </q-input>
         </div>
         <div class="pb-32 pt-16">
-          <q-btn @click="handleLogin" class="w-full" color="primary">
-            登录
-            <template v-slot:loading>
-              <q-spinner-radio />
-            </template>
-          </q-btn>
+          <q-btn :loading="loading" @click="handleLogin" class="w-full" color="primary">登录</q-btn>
         </div>
         <div class="fx-between">
           <RouterLink to="/register" class="text-primary">免费注册</RouterLink>
@@ -45,7 +44,7 @@ import loginMixin from '@/mixins/login'
 import {UserModule} from "@/store/modules/user"
 import {Dictionary} from "vue-router/types/router"
 import {Route} from "vue-router"
-import {isWechat} from "@/utils/validate"
+import { isWechat } from "@/utils/validate"
 
 @Component({
   name: 'Login'
@@ -56,14 +55,25 @@ export default class Login extends mixins(loginMixin) {
   private otherQuery: Dictionary<string> = {}
 
   created() {
-    if (isWechat()) {
-      location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
+    if (this.isWechat) {
+      // location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
       // location.href = `http://10.1.143.65:7026/api/v1/wechat/login`
     }
   }
 
+  wechatLogin() {
+    location.href = `${process.env.VUE_APP_DOMAIN}/api/v1/wechat/login`
+  }
+
+  private loading = false;
+
+  private isWechat = isWechat()
+
   private async handleLogin() {
-    await UserModule.Login(this.loginForm)
+    this.loading = true
+    await UserModule.Login(this.loginForm).then( () => {
+      this.loading = false
+    })
     this.$router.push({
       path: this.redirect || '/',
       query: this.otherQuery

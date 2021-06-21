@@ -7,8 +7,8 @@ import {isValidateEmail} from "@/utils/validate"
 
 export default class extends Vue {
   public loginForm = {
-    email: 'zf@fendy5.cn',
-    password: '123456'
+    email: '',
+    password: ''
   }
 
   // private validatePassword = () => {
