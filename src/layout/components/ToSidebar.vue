@@ -56,7 +56,7 @@ export default class extends Vue {
   }
 
   get routes() {
-    return this.$router.options.routes[0].children
+    return this.$router.options.routes && this.$router.options.routes[0].children
   }
 
   get token() {
