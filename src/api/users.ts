@@ -41,3 +41,18 @@ export const updateUserApi = (data: any) =>
     method: 'post',
     data
   })
+
+export const forgetApi = (data: any) =>
+  request({
+    url: '/api/v1/forget',
+    method: 'post',
+    data
+  })
+
+export const updatePasswordApi = (data: any) => {
+  request({
+    url: '/api/v1/update-password',
+    method: 'put',
+    data
+  })
+}
