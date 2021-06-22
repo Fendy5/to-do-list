@@ -2,10 +2,12 @@
   <q-layout view="lHh Lpr lFf">
     <to-header />
     <to-sidebar />
-    <q-page-container>
+    <q-page-container class="main-app">
       <RouterView />
     </q-page-container>
-    <to-footer />
+    <q-page-container style="padding-top: 0">
+      <to-footer />
+    </q-page-container>
   </q-layout>
 </template>
 
@@ -30,7 +32,8 @@ export default class extends Vue {
 </script>
 
 <style lang="scss">
-.q-page-container {
+.main-app {
+  display: grid;
   min-height: calc(100vh - 65px);
 }
 </style>

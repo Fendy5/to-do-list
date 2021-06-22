@@ -1,71 +1,73 @@
 <template>
-  <div class="user center shadow">
-    <q-avatar
-      class="avatar block mx-auto mb-32 cursor-pointer"
-      size="96px"
-      @click="changeAvatar"
-    >
-      <img :src="form.avatar">
-    </q-avatar>
-    <div v-if="edit===0">
-      <div class="user-item">
-        <div class="text-secondary">昵称</div>
-        <div class="">{{ user.nickname }}</div>
-      </div>
-      <div class="user-item">
-        <div class="text-secondary">邮箱</div>
-        <!--      <q-input  placeholder="请输入邮箱" />-->
-        <div class="">{{ user.email }}</div>
-      </div>
-      <div class="user-item">
-        <div class="text-secondary">微信</div>
-        <div class="">{{ user.openid?'已绑定':'未绑定' }}</div>
-      </div>
-      <div class="btn fx-between">
-        <q-btn outline @click="changeEdit(1)" style="color: goldenrod;" label="修改信息"/>
-        <q-btn outline @click="logout" style="color: indianred;" label="退出登录"/>
-      </div>
-    </div>
-    <div v-else>
-      <div class="input-item">
-        <div class="text-secondary lh-42">昵称</div>
-        <q-input placeholder="请输入昵称" v-model="form.nickname"/>
-      </div>
-      <div class="input-item">
-        <div class="text-secondary lh-42">邮箱</div>
-        <q-input placeholder="请输入邮箱" v-model="form.email"/>
-      </div>
-      <div class="input-item">
-        <div class="text-secondary lh-42">密码</div>
-        <q-input placeholder="请输入密码" type="password" v-model="form.password"/>
-      </div>
-      <div class="input-item">
-        <div class="text-secondary lh-42">微信</div>
-        <div v-if="user.openid" class="lh-42">已绑定</div>
-        <div v-else class="lh-42 text-primary">
-          <span @click="bindWechat" class="cursor-pointer">绑定</span>
+  <div class="relative">
+    <div class="user center shadow">
+      <q-avatar
+          class="avatar block mx-auto mb-32 cursor-pointer"
+          size="96px"
+          @click="changeAvatar"
+      >
+        <img :src="form.avatar">
+      </q-avatar>
+      <div v-if="edit===0">
+        <div class="user-item">
+          <div class="text-secondary">昵称</div>
+          <div class="">{{ user.nickname }}</div>
+        </div>
+        <div class="user-item">
+          <div class="text-secondary">邮箱</div>
+          <!--      <q-input  placeholder="请输入邮箱" />-->
+          <div class="">{{ user.email }}</div>
+        </div>
+        <div class="user-item">
+          <div class="text-secondary">微信</div>
+          <div class="">{{ user.openid?'已绑定':'未绑定' }}</div>
+        </div>
+        <div class="btn fx-between">
+          <q-btn outline @click="changeEdit(1)" style="color: goldenrod;" label="修改信息"/>
+          <q-btn outline @click="logout" style="color: indianred;" label="退出登录"/>
         </div>
       </div>
-      <div class="btn fx-around">
-        <q-btn
-            outline
-            style="color: #a5a2a2;"
-            @click="changeEdit(0)"
-            label="取消"
-        />
-        <q-btn
-            outline
-            @click="saveUser"
-            class="text-primary"
-            label="保存"
-        />
+      <div v-else>
+        <div class="input-item">
+          <div class="text-secondary lh-42">昵称</div>
+          <q-input placeholder="请输入昵称" v-model="form.nickname"/>
+        </div>
+        <div class="input-item">
+          <div class="text-secondary lh-42">邮箱</div>
+          <q-input placeholder="请输入邮箱" v-model="form.email"/>
+        </div>
+        <div class="input-item">
+          <div class="text-secondary lh-42">密码</div>
+          <q-input placeholder="请输入密码" type="password" v-model="form.password"/>
+        </div>
+        <div class="input-item">
+          <div class="text-secondary lh-42">微信</div>
+          <div v-if="user.openid" class="lh-42">已绑定</div>
+          <div v-else class="lh-42 text-primary">
+            <span @click="bindWechat" class="cursor-pointer">绑定</span>
+          </div>
+        </div>
+        <div class="btn fx-around">
+          <q-btn
+              outline
+              style="color: #a5a2a2;"
+              @click="changeEdit(0)"
+              label="取消"
+          />
+          <q-btn
+              outline
+              @click="saveUser"
+              class="text-primary"
+              label="保存"
+          />
+        </div>
       </div>
+      <q-dialog transition-show="flip-down" transition-hide="flip-up" v-model="dialog">
+        <q-card class="p-24">
+          <div ref="qrcode"></div>
+        </q-card>
+      </q-dialog>
     </div>
-    <q-dialog transition-show="flip-down" transition-hide="flip-up" v-model="dialog">
-      <q-card class="p-24">
-        <div ref="qrcode"></div>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 

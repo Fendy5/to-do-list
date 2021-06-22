@@ -52,7 +52,6 @@ export default class Forget extends mixins(loginMixin) {
   private step = 0
 
   created() {
-    console.log(this.$route.query.token)
     if (this.$route.query.token) {
       this.step = 1
     }

@@ -11,31 +11,39 @@ const routes: Array<RouteConfig> = [
     component: Layout,
     children: [
       {
-        path: 'home',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/home/index.vue'),
+        path: '/home',
         name: 'Home',
-        meta: { title: 'To Do List' }
+        meta: { title: '首页', icon: 'home' },
+        component: () => import(/* webpackChunkName: "home" */ '@/views/home/index.vue')
+      },
+      {
+        path: '/todo-sets',
+        name: 'TodoSet',
+        meta: { title: 'ToDo集', icon: 'widgets' },
+        component: () => import(/* webpackChunkName: "todo-sets" */ '@/views/todo-sets/index.vue')
       },
       {
         path: '/data-statistics',
         name: 'DataStatistics',
-        meta: { title: '数据统计' },
+        meta: { title: '数据统计', hidden: true },
         component: () => import(/* webpackChunkName: "data-statistics" */ '@/views/data-statistics/index.vue')
       },
       {
         path: '/user',
         name: 'User',
-        meta: { title: '个人信息' },
+        meta: { title: '个人信息', icon: 'account_circle' },
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/index.vue')
       },
       {
         path: '/folder/:id',
         name: 'Folder',
+        meta: { hidden: true },
         component: () => import(/* webpackChunkName: "folder" */ '@/views/todo-list/folder.vue')
       },
       {
         path: '/list/:id',
         name: 'ToDoList',
+        meta: { hidden: true },
         component: () => import(/* webpackChunkName: "to-do-lis" */ '@/views/todo-list/index.vue')
       }
     ]
