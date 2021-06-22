@@ -49,10 +49,10 @@ export const forgetApi = (data: any) =>
     data
   })
 
-export const updatePasswordApi = (data: any) => {
+export const updatePasswordApi = (data: any) =>
   request({
     url: '/api/v1/update-password',
     method: 'put',
     data
   })
-}
+
