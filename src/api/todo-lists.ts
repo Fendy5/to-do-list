@@ -39,3 +39,10 @@ export const updateItemsApi = (data: any, id: string) =>
     method: 'put',
     data
   })
+
+// 获取今天的ToDoList Id
+export const getTodayListApi = () =>
+  request({
+    url: `/api/v1/get-today`,
+    method: 'get'
+  })

@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="relative">
     <q-spinner-cube v-if="loading" class="center" size="5em" color="primary" />
     <div v-else>
       <div class="p-16">
         <q-breadcrumbs>
-          <q-breadcrumbs-el icon="home" to="/" />
+          <q-breadcrumbs-el icon="home" to="/todo-sets" />
           <q-breadcrumbs-el :label="`${folder.name}`" icon="folder" />
         </q-breadcrumbs>
       </div>

@@ -2,9 +2,11 @@
   <q-layout view="lHh Lpr lFf">
     <to-header />
     <to-sidebar />
-    <q-page-container class="main-app">
-      <RouterView />
-    </q-page-container>
+    <transition name="fade-transform">
+      <q-page-container class="main-app">
+        <RouterView />
+      </q-page-container>
+    </transition>
     <q-page-container style="padding-top: 0">
       <to-footer />
     </q-page-container>
@@ -35,5 +37,20 @@ export default class extends Vue {
 .main-app {
   display: grid;
   min-height: calc(100vh - 65px);
+}
+/* fade-transform */
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all .5s;
+}
+
+.fade-transform-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>
