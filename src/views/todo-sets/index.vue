@@ -1,5 +1,5 @@
 <template>
-  <div class="home relative">
+  <div class="p-12 relative">
     <q-spinner-cube v-if="loading" class="center" size="5em" color="primary" />
     <div v-else class="folder-list">
       <div v-for="i in folderList" :key="i.id" class="folder">
@@ -37,7 +37,6 @@
 import { Component, Vue } from 'vue-property-decorator'
 import PageSticky from "@/components/PageSticky.vue"
 import {addFolderApi, deleteFoldersApi, getFoldersApi, updateFoldersApi} from "@/api/folders"
-import {UserModule} from "@/store/modules/user"
 
 @Component({
   components: {

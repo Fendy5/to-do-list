@@ -12,7 +12,7 @@ $widths: 14,25,30,250;
   width: 100%;
 }
 
-$paddings: 8,16,24,32;
+$paddings: 8,12,16,24,32;
 @each $i in $paddings{
   .pt-#{$i} {
     padding-top: $i+px;
