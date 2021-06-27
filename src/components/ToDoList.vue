@@ -249,9 +249,9 @@ export default class Folder extends Vue {
       ok: '确定',
       persistent: true
     }).onOk(() => {
-      const task = this.allList.splice(index, 1)
-      const idx = this.allList.findIndex(value => task[0].id === value.id)
-      this.allList.splice(idx, 1)
+      this.allList.splice(index, 1)
+      // const idx = this.allList.findIndex(value => task[0].id === value.id)
+      // this.allList.splice(idx, 1)
     })
   }
 
