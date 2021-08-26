@@ -10,6 +10,7 @@ pipeline {
     stage('Build') {
       steps {
         nodejs(nodeJSInstallationName: 'NodeJS 14.4.0', configId: 'ed527ccd-5183-4936-8efe-80a60132ee3b') {
+          sh 'npm uninstall yarn'
           sh '''npm install -g yarn --registry=https://registry.npm.taobao.org
 
 yarn config set registry https://registry.npm.taobao.org -g
