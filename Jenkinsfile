@@ -10,14 +10,14 @@ pipeline {
     stage('Build') {
       steps {
         nodejs(nodeJSInstallationName: 'NodeJS 14.4.0', configId: 'ed527ccd-5183-4936-8efe-80a60132ee3b') {
-          sh 'cnpm install'
-          sh 'cnpm run build'
-        }
-
-        sh '''npm install -g yarn --registry=https://registry.npm.taobao.org
+          sh '''npm install -g yarn --registry=https://registry.npm.taobao.org
 
 yarn config set registry https://registry.npm.taobao.org -g
 yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g'''
+          sh 'yarn install'
+          sh 'yarn build'
+        }
+
       }
     }
 
