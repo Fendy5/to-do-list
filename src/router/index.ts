@@ -45,6 +45,12 @@ const routes: Array<RouteConfig> = [
         name: 'ToDoList',
         meta: { hidden: true },
         component: () => import(/* webpackChunkName: "to-do-lis" */ '@/views/todo-list/index.vue')
+      },
+      {
+        path: '/about',
+        name: 'About',
+        meta: { hidden: true },
+        component: () => import(/* webpackChunkName: "to-do-lis" */ '@/views/About.vue')
       }
     ]
   },
