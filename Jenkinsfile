@@ -9,14 +9,9 @@ pipeline {
 
     stage('Build') {
       steps {
-        nodejs(nodeJSInstallationName: 'NodeJS 14.4.0', configId: 'ed527ccd-5183-4936-8efe-80a60132ee3b') {
-          sh 'npm uninstall yarn'
-          sh '''npm install -g yarn --registry=https://registry.npm.taobao.org
-
-yarn config set registry https://registry.npm.taobao.org -g
-yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g'''
-          sh 'yarn install'
-          sh 'yarn build'
+        nodejs(nodeJSInstallationName: 'NodeJS 14.17.5', configId: '15077958-c5fc-4bdc-b6ed-803c700399b2') {
+          sh 'cnpm install'
+          sh 'cnpm run build'
         }
 
       }
@@ -24,8 +19,8 @@ yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g'''
 
     stage('Deploy') {
       steps {
-        sh "rm -rf /www/wwwroot/${ItemName}.fendy5.cn/dist"
-        sh "mv ./dist /www/wwwroot/${ItemName}.fendy5.cn"
+        sh 'rm -rf /www/wwwroot/${ItemName}.fendy5.cn/dist'
+        sh 'mv ./dist /www/wwwroot/${ItemName}.fendy5.cn'
       }
     }
 
