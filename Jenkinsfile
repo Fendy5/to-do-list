@@ -9,7 +9,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        nodejs(nodeJSInstallationName: 'NodeJS 16.7.0', configId: 'ed527ccd-5183-4936-8efe-80a60132ee3b') {
+        nodejs(nodeJSInstallationName: 'NodeJS 14.4.0', configId: '813e0106-1f9e-4e72-a283-4bb717eec4d2') {
           sh 'yarn install'
           sh 'yarn build'
         }
