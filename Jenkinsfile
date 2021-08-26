@@ -14,6 +14,10 @@ pipeline {
           sh 'cnpm run build'
         }
 
+        sh '''npm install -g yarn --registry=https://registry.npm.taobao.org
+
+yarn config set registry https://registry.npm.taobao.org -g
+yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g'''
       }
     }
 
@@ -21,12 +25,6 @@ pipeline {
       steps {
         sh "rm -rf /www/wwwroot/${ItemName}.fendy5.cn/dist"
         sh "mv ./dist /www/wwwroot/${ItemName}.fendy5.cn"
-      }
-    }
-
-    stage('Delete Cache') {
-      steps {
-        sh 'rm -rf node_modules yarn.lock'
       }
     }
 
