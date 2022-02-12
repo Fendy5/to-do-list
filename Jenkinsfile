@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Git Pull') {
       steps {
-        git(credentialsId: 'github', branch: 'main', url: "https://github.com.cnpmjs.org/Fendy5/${env.ItemName}.git")
+        git(credentialsId: 'github', branch: 'main', url: "https://github.com/Fendy5/${env.ItemName}.git")
       }
     }
 
