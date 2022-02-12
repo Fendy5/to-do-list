@@ -46,3 +46,10 @@ export const getTodayListApi = () =>
     url: `/api/v1/get-today`,
     method: 'get'
   })
+
+// 置顶api
+export const topApi = (id: string) =>
+  request({
+    url: `/api/v1/todo-lists/top/${id}`,
+    method: 'put'
+  })

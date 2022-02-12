@@ -14,6 +14,9 @@
             <svg-icon class="text-primary todo-icon" icon-class="todo-list" />
             <q-menu :touch-position="true" :context-menu="true" transition-show="rotate" transition-hide="rotate">
               <q-list dense style="min-width: 100px">
+                <q-item clickable v-close-popup>
+                  <q-item-section @click="top(i.list_id)">置顶</q-item-section>
+                </q-item>
                 <q-item @click="showEdit(i.name)" clickable>
                   <q-item-section>编辑</q-item-section>
                   <q-popup-edit @before-hide="edit(i.list_id, i.name)" v-model="editPopup" content-class="bg-accent text-white">
@@ -50,7 +53,7 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator"
 import PageSticky from "@/components/PageSticky.vue"
-import {addTodoListsApi, deleteTodoListsApi, getTodoListsApi, updateTodoListsApi} from "@/api/todo-lists"
+import {addTodoListsApi, deleteTodoListsApi, getTodoListsApi, topApi, updateTodoListsApi} from "@/api/todo-lists"
 
 @Component({
   name: 'Folder',
@@ -71,6 +74,10 @@ export default class Folder extends Vue {
 
   private showEdit(name: string) {
     this.name = name
+  }
+
+  private top(id: string) {
+    topApi(id)
   }
 
   private edit(id: string, name: string) {
