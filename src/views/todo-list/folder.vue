@@ -15,7 +15,8 @@
             <q-menu :touch-position="true" :context-menu="true" transition-show="rotate" transition-hide="rotate">
               <q-list dense style="min-width: 100px">
                 <q-item clickable v-close-popup>
-                  <q-item-section @click="top(i.list_id)">置顶</q-item-section>
+                  <q-item-section v-if="i.is_top" @click="top(i.list_id, true)">取消置顶</q-item-section>
+                  <q-item-section v-else @click="top(i.list_id)">置顶</q-item-section>
                 </q-item>
                 <q-item @click="showEdit(i.name)" clickable>
                   <q-item-section>编辑</q-item-section>
@@ -55,12 +56,20 @@ import {Component, Vue} from "vue-property-decorator"
 import PageSticky from "@/components/PageSticky.vue"
 import {addTodoListsApi, deleteTodoListsApi, getTodoListsApi, topApi, updateTodoListsApi} from "@/api/todo-lists"
 
+interface TodoListProp {
+  folder_id: string
+  id: number
+  is_top: boolean
+  list_id: string
+  name: string
+}
+
 @Component({
   name: 'Folder',
   components: {PageSticky}
 })
 export default class Folder extends Vue {
-  private todoList = []
+  private todoList:TodoListProp[] = []
   private name = ''
   private editPopup = ''
   private folder = {
@@ -76,8 +85,15 @@ export default class Folder extends Vue {
     this.name = name
   }
 
-  private top(id: string) {
-    topApi(id)
+  /**
+   * @param id
+   * @param cancel 是否取消置顶
+   * @private
+   */
+  private top(id: string, cancel = false) {
+    topApi(id, {cancel}).then(value => {
+      this.todoList = value.data
+    })
   }
 
   private edit(id: string, name: string) {
