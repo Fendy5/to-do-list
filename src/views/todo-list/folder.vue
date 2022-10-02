@@ -20,7 +20,7 @@
                 </q-item>
                 <q-item @click="showEdit(i.name)" clickable>
                   <q-item-section>编辑</q-item-section>
-                  <q-popup-edit @before-hide="edit(i.folder_id, i.name)" v-model="editPopup" content-class="bg-accent text-white">
+                  <q-popup-edit @before-hide="edit(i.list_id, i.name)" v-model="editPopup" content-class="bg-accent text-white">
                     <q-input dark color="white" v-model="name" dense autofocus counter>
                       <template v-slot:append>
                         <q-icon name="edit" />
@@ -96,9 +96,14 @@ export default class Folder extends Vue {
     })
   }
 
-  // 编辑
+  /**
+   * @description 编辑
+   * @param id
+   * @param name
+   * @private
+   */
   private edit(id: string, name: string) {
-    (this.name && name!==this.name) && updateTodoListsApi({name: this.name}, id).then(() => {
+    (this.name && name!==this.name) && updateTodoListsApi({name: this.name, folder_id: this.$route.params.id}, id).then(() => {
       this.getTodoList()
       this.name = ''
     })
