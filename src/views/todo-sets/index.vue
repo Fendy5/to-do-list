@@ -26,7 +26,7 @@
             </q-list>
           </q-menu>
         </RouterLink>
-        <span class="text-primary text-center">{{ i.name }}</span>
+        <span class="text-primary text-center todo-name ellipsis-2">{{ i.name }}</span>
       </div>
       <page-sticky @click="addFolder" />
     </div>

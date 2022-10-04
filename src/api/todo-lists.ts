@@ -1,4 +1,5 @@
 import request from "@/utils/request"
+import { ReuseToDoListProp } from '@/types/todo-list'
 
 export const getTodoListsApi = (params: any) =>
   request({
@@ -52,5 +53,12 @@ export const topApi = (id: string, data: { cancel: boolean }) =>
   request({
     url: `/api/v1/todo-lists/top/${id}`,
     method: 'put',
+    data
+  })
+
+export const reuseTodoListApi = (data: ReuseToDoListProp) =>
+  request({
+    url: `/api/v1/reuse-todo-list`,
+    method: 'post',
     data
   })

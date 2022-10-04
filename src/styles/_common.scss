@@ -146,3 +146,14 @@ $paddings: 8,12,16,24,32;
 .grid {
   display: grid;
 }
+.ellipsis-2 {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-line-clamp:2; // (两行文字)
+  -webkit-box-orient:vertical;
+}
+
+.todo-name {
+  height: 42px;
+}

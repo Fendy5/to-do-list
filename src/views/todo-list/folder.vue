@@ -5,7 +5,7 @@
       <div class="p-16">
         <q-breadcrumbs>
           <q-breadcrumbs-el icon="home" to="/todo-sets" />
-          <q-breadcrumbs-el :label="`${folder.name}`" icon="folder" />
+          <q-breadcrumbs-el class='ellipsis-2' :label="`${folder.name}`" icon="folder" />
         </q-breadcrumbs>
       </div>
       <div v-if="todoList.length" class="folder-list">
@@ -28,16 +28,35 @@
                     </q-input>
                   </q-popup-edit>
                 </q-item>
+                <q-item clickable>
+                  <q-item-section @click="reuseToDoList(i)">复用</q-item-section>
+                  <q-dialog v-model="reuseDialog" persistent transition-show="scale" transition-hide="scale">
+                    <q-card>
+                      <q-card-section class="row items-center">
+                        <q-form style='width: 350px'>
+                          <q-input color="purple-12"  v-model="reuseData.name" label="名称" lazy-rules :rules="[val => val && val.length > 0 || '请输入名称']" />
+                          <q-select emit-value map-options color="purple-12" v-model="reuseData.folder_id" option-value="fd_id" option-label="name" :options="folderList" label="所属"></q-select>
+                          <q-toggle class='q-mt-lg' v-model="reuseData.is_top" label='是否置顶' color="purple-12" />
+                        </q-form>
+                      </q-card-section>
+
+                      <q-card-actions align="right">
+                        <q-btn flat label="取消" color="primary" v-close-popup />
+                        <q-btn flat @click='onReuseSubmit' label="确定" color="primary" v-close-popup />
+                      </q-card-actions>
+                    </q-card>
+                  </q-dialog>
+                </q-item>
                 <q-item @click="deleteTodoList(i.list_id)" clickable v-close-popup>
                   <q-item-section>删除</q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup>
-                  <q-item-section>属性</q-item-section>
-                </q-item>
+<!--                <q-item clickable v-close-popup>-->
+<!--                  <q-item-section>属性</q-item-section>-->
+<!--                </q-item>-->
               </q-list>
             </q-menu>
           </RouterLink>
-          <span class="text-primary text-center">{{ i.name }}</span>
+          <span class="text-primary text-center ellipsis-2 todo-name">{{ i.name }}</span>
         </div>
       </div>
       <div v-else class="center">
@@ -54,7 +73,9 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator"
 import PageSticky from "@/components/PageSticky.vue"
-import {addTodoListsApi, deleteTodoListsApi, getTodoListsApi, topApi, updateTodoListsApi} from "@/api/todo-lists"
+import { addTodoListsApi, deleteTodoListsApi, getTodoListsApi, reuseTodoListApi, topApi, updateTodoListsApi } from '@/api/todo-lists'
+import { ReuseToDoListProp } from '@/types/todo-list'
+import { getFoldersApi } from '@/api/folders'
 
 interface TodoListProp {
   folder_id: string
@@ -76,6 +97,15 @@ export default class Folder extends Vue {
     name: '文件夹'
   }
   private loading = true
+  // TodoList复用
+  private reuseDialog = false
+  private reuseData: ReuseToDoListProp = {
+    name: '',
+    folder_id: '',
+    list_id: '',
+    is_top: true
+  }
+  private folderList = []
 
   created() {
     this.getTodoList()
@@ -94,6 +124,21 @@ export default class Folder extends Vue {
     topApi(id, {cancel}).then(value => {
       this.todoList = value.data
     })
+  }
+
+
+  private async reuseToDoList(TodoListItem: TodoListProp) {
+    this.reuseDialog = true
+    this.reuseData.name = TodoListItem.name
+    this.reuseData.list_id = TodoListItem.list_id
+    this.reuseData.folder_id = this.$route.params.id
+    const res = await getFoldersApi()
+    this.folderList = res.data?.folders
+  }
+
+  private async onReuseSubmit() {
+    const res = await reuseTodoListApi(this.reuseData)
+    await this.$router.push(`/list/${res.data}`)
   }
 
   /**
