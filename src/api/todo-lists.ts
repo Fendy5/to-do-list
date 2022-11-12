@@ -62,3 +62,25 @@ export const reuseTodoListApi = (data: ReuseToDoListProp) =>
     method: 'post',
     data
   })
+
+// 获取TODOList详情，不含文件夹
+export const getTodoListApi = (id: string) =>
+  request({
+    url: `/api/v1/get-list/${id}`,
+    method: 'get'
+  })
+
+// 获取TODOList详情，不含文件夹
+export const setTodoAuthApi = (id: string, data: { 'can_edit': boolean }) =>
+  request({
+    url: `/api/v1/todo-auth/${id}`,
+    method: 'put',
+    data
+  })
+
+
+
+
+
+
+

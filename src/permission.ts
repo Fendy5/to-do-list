@@ -20,7 +20,7 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
       next()
     }
   } else {
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (whiteList.indexOf(to.path) !== -1 || to.path.match(/\/s\/*/)) {
       next()
     } else {
       next(`/login?redirect=${to.path}`)

@@ -27,11 +27,7 @@
               <div class="text-secondary">一共{{ allList.length}}项</div>
             </div>
             <div class="todo-main">
-              <q-scroll-area
-                  v-if="allList.length"
-                  :thumb-style="thumbStyle"
-                  style="height: 365px;"
-              >
+              <q-scroll-area v-if="allList.length" :thumb-style="thumbStyle" style="height: 365px;">
                 <draggable v-if="allList.length" :list="allList" class="list-group" ghost-class="ghost" handle=".cursor-move" @start="dragging = true" @end="dragging = false">
                   <transition-group name="list-complete">
                     <div  v-for="(i,index) in allList"  class="list-complete-item" :key="i.id">
@@ -164,6 +160,53 @@
           </div>
         </div>
       </div>
+      <!-- 操作小图标-->
+      <q-page-sticky position="bottom-right" :offset="[64, 64]">
+        <q-fab glossy direction="up" color="primary">
+          <!-- 取消置顶-->
+          <q-fab-action @click="top(listId, true)" color="primary"  >
+            <template>
+              <svg-icon class="text-white wh-25" icon-class="cancel-pin" />
+            </template>
+          </q-fab-action>
+          <!-- 分享-->
+          <q-fab-action @click="authDialog=true" color="primary" >
+            <template>
+              <svg-icon class="text-white wh-25" icon-class="share" />
+            </template>
+          </q-fab-action>
+        </q-fab>
+      </q-page-sticky>
+      <!-- 选择权限-->
+      <q-dialog v-model="authDialog" persistent>
+        <q-card style="min-width: 350px">
+          <q-card-section>
+            <div class="text-h6">设置可编辑权限</div>
+          </q-card-section>
+          <q-card-section class="q-pt-none">
+            <q-toggle v-model="isNeedLogin" label="是否需要登录" left-label />
+          </q-card-section>
+          <q-card-actions align="right" class="text-primary">
+            <q-btn flat label="取消" v-close-popup />
+            <q-btn flat label="确定" @click='generateLink' v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+      <!-- 分享链接弹窗-->
+      <q-dialog v-model="linkDialog" persistent>
+        <q-card style="min-width: 350px">
+          <q-card-section>
+            <div class="text-h6">链接</div>
+          </q-card-section>
+          <q-card-section class="q-pt-none">
+            <p>{{ shareLink }}</p>
+          </q-card-section>
+          <q-card-actions align="right" class="text-primary">
+            <q-btn flat label="取消" v-close-popup />
+            <q-btn flat @click='copyLink' label="复制" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
   </div>
 </template>
@@ -171,8 +214,10 @@
 <script lang="ts">
 import {Component, Prop, Vue, Watch} from "vue-property-decorator"
 import Draggable from 'vuedraggable'
-import { updateItemsApi} from "@/api/todo-lists"
+import { setTodoAuthApi, topApi, updateItemsApi } from '@/api/todo-lists'
 import {getTodoDetailApi} from "@/api/todo-lists"
+import { copyText } from "@/utils"
+import { Notify } from 'quasar'
 
 export interface Task {
   id: string
@@ -194,6 +239,12 @@ export default class Folder extends Vue {
   private canUpdate = false
   private title = ''
   private folder = ''
+  private prompt = false
+  private authDialog = false
+  private linkDialog = false
+  private isNeedLogin = false
+  private shareLink = ''
+
   private loading = {
     page: true
   }
@@ -225,6 +276,7 @@ export default class Folder extends Vue {
       this.allList = value.data.content
       this.folder = value.data.folder
       this.title = value.data.name
+      this.isNeedLogin = !value.data.can_edit
       document.title =this.title
       this.loading.page = false
     })
@@ -232,6 +284,29 @@ export default class Folder extends Vue {
 
   private changeInput() {
     this.updateTask()
+  }
+
+  // 操控权限，显示TODO链接
+  private async generateLink() {
+    const { code } = await setTodoAuthApi(this.listId, { can_edit: !this.isNeedLogin })
+    if (code === 0) {
+      this.shareLink = `${process.env.VUE_APP_HOST}/s/${this.listId}`
+      this.linkDialog = true
+    }
+  }
+
+  private async top(id: string, cancel = false) {
+    await topApi(id, { cancel })
+  }
+
+  // 复制链接
+  private copyLink() {
+    copyText(this.shareLink)
+    Notify.create({
+      type: 'positive',
+      position: 'top',
+      message: '复制成功'
+    })
   }
 
   private toggleEdit(index: number) {

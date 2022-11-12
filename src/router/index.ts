@@ -75,6 +75,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "forget" */ '@/views/login/forget.vue')
   },
   {
+    path: '/s/:id',
+    name: 'S',
+    component: () => import(/* webpackChunkName: "s" */ '@/views/s/index.vue')
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import(/* webpackChunkName: "register" */ '@/views/login/register.vue')
