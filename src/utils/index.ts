@@ -15,3 +15,6 @@ export const copyText = (content: string) => {
   }
   document.body.removeChild(input)
 }
+
+// 是否为移动端
+export const isMobile = () => /Mobi|Android|iPhone/i.test(navigator.userAgent)

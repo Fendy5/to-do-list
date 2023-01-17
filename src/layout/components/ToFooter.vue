@@ -1,9 +1,10 @@
 <template>
-  <footer><div class="copyright">Copyright @{{ year }} <a href="https://fendy5.cn">Fendy</a> All Rights Reserved </div></footer>
+  <footer><div v-if='!isMobile' class="copyright">Copyright @{{ year }} <a href="https://fendy5.cn">Fendy</a> All Rights Reserved </div></footer>
 </template>
 
 <script lang="ts">
 import {Component,Vue} from "vue-property-decorator"
+import { isMobile } from '@/utils'
 
 @Component({
   name: 'Footer'
@@ -11,10 +12,11 @@ import {Component,Vue} from "vue-property-decorator"
 
 export default class extends Vue {
   private year = 0
+  private isMobile = isMobile()
 
   created() {
-    const date=new Date()
-    this.year=date.getFullYear()
+    const date = new Date()
+    this.year = date.getFullYear()
   }
 }
 
