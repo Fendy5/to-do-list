@@ -9,3 +9,13 @@ export interface ReuseToDoListProp {
   folder_id: string
   is_top: boolean
 }
+
+export interface TodoItemProp {
+  id: string
+  done: boolean | null
+  allDone?: []
+  label: string
+  editAble: boolean
+  isParent?: boolean
+  children?: TodoItemProp[]
+}

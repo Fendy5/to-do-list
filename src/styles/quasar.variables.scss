@@ -8,9 +8,10 @@ $accent    : #e951b1;
 $dark      : #1D1D1D;
 
 $positive  : #21BA45;
-$negative  : #C10015;
+$negative  : #F56C6C;
 $info      : #31CCEC;
 $warning   : #F2C037;
+$danger: #F56C6C;
 @import '~quasar-variables-styl';
 
 
@@ -20,4 +21,5 @@ $bg-secondary: #fafafa;
   bg-secondary: $bg-secondary;
   primary: $primary;
   secondary: $secondary;
+  danger: $negative;
 }
