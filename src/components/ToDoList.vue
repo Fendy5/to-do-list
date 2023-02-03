@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-spinner-cube v-if="loading.page" class="center" size="5em" color="primary" />
-    <div v-else>
+    <template v-else>
       <div class="p-16">
         <q-breadcrumbs>
           <q-breadcrumbs-el icon="home" to="/todo-sets" />
@@ -46,15 +46,16 @@
                     <div class="list-complete-item">
                       <div class="todo-item">
                         <q-checkbox @input="(val) => changeInput(val,node)" v-model="node.done" />
-                        <q-item-section>
-                          <div class="fx-between px-16">
+                        <q-item-section @dblclick='() => { toggleEdit(node, true) }'>
+                          <div v-if='!node.editAble' class="fx-between px-16">
                             <span>{{node.label}}</span>
                             <span class='handle-icon' v-if='!node.isParent'>
-                                <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, true)' name='north' />
-                                <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, false)' name='south' />
-                                <q-icon @click.stop='deleteTask(node.id)' class="danger-text invisible" size="20px" name="delete" />
-                              </span>
+                              <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, true)' name='north' />
+                              <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, false)' name='south' />
+                              <q-icon @click.stop='deleteTask(node.id)' class="danger-text invisible" size="20px" name="delete" />
+                            </span>
                           </div>
+                          <q-input v-else autofocus v-model="node.label" @blur='toggleEdit(node, false)' @keyup.enter="toggleEdit(node, false)" placeholder="添加任务" />
                         </q-item-section>
                       </div>
                     </div>
@@ -147,7 +148,7 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -159,7 +160,7 @@ import {getTodoDetailApi} from "@/api/todo-lists"
 import { copyText } from "@/utils"
 import { Notify } from 'quasar'
 import { TodoItemProp } from '@/types/todo-list'
-import { debounce, cloneDeep } from 'lodash'
+import { debounce } from 'lodash'
 
 export interface Task {
   id: string
@@ -305,7 +306,7 @@ export default class Folder extends Vue {
         parentNode.done = this.checkNodeStatus(parentNode.children || [])
       }
     }
-    this.updateTask(this.todoNodes)
+    this.updateTask(this)
   }
 
   // 判断节点状态 -1全未选 0部分选 1全选
@@ -399,6 +400,14 @@ export default class Folder extends Vue {
   //   this.allList[index].editAble = !this.allList[index].editAble
   // }
 
+  private toggleEdit(node: TodoItemProp, isEdit = true) {
+    node.editAble = isEdit
+    if (!isEdit) {
+      this.canUpdate = true
+      this.updateTask(this)
+    }
+  }
+
   private deleteTask(id: string) {
     this.$q.dialog({
       title: '警告',
@@ -474,8 +483,14 @@ export default class Folder extends Vue {
 
   @Watch('todoNodes', { deep: true })
   handleWatch() {
-    this.updateTask(this.todoNodes)
+    this.updateTask(this)
   }
+
+  private updateTask = debounce((_this) => {
+    if (_this.canUpdate) {
+      updateItemsApi({ content: _this.todoNodes }, _this.listId)
+    }
+  }, 1500)
 
   // @Watch('tab')
   // watchTab(tab: string) {
@@ -495,11 +510,6 @@ export default class Folder extends Vue {
   //   updateItemsApi({ content: this.todoNodes }, this.listId)
   // }
 
-  private updateTask = debounce((content) => {
-    this.canUpdate && updateItemsApi({ content }, this.listId)
-    this.canUpdate = true
-  }, 1500)
-
 }
 </script>
 
@@ -518,8 +528,8 @@ export default class Folder extends Vue {
     border-bottom: 1px dashed #dadada;
   }
   .todo-main {
-    height: calc(100vh - 375px);
     background-color: rgba(0, 0, 0, 0.01);
+    min-height: 375px;
     .todo-item {
       display: flex;
       //padding: 8px 0;
@@ -542,13 +552,16 @@ export default class Folder extends Vue {
     }
   }
   .todo-footer {
-    //position: absolute;
+    position: absolute;
     background: #fafafa;
     bottom: 15px;
-    width: 100%;
+    width: 90%;
   }
 }
 @media (max-width: 450px) {
+  .todo-main {
+    height: calc(100vh - 375px);
+  }
   .todo-list {
     width: 100%;
     box-shadow: none;
@@ -557,6 +570,10 @@ export default class Folder extends Vue {
     top: unset;
     transform: unset;
     padding: 0 24px 24px 24px;
+  }
+  .todo-footer {
+    position: static !important;
+    width: 100% !important;
   }
 }
 .ghost {
