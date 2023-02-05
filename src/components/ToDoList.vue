@@ -182,7 +182,6 @@ export default class Folder extends Vue {
   private canUpdate = false
   private title = ''
   private folder = ''
-  private prompt = false
   private authDialog = false
   private linkDialog = false
   private isNeedLogin = false
@@ -285,15 +284,19 @@ export default class Folder extends Vue {
   //   return this.filterStatus()
   // }
 
-  created() {
-    getTodoDetailApi(this.listId).then(value => {
-      this.todoNodes = value.data.content
-      this.folder = value.data.folder
-      this.title = value.data.name
-      this.isNeedLogin = !value.data.can_edit
-      document.title =this.title
-      this.loading.page = false
-    })
+  async created() {
+    await this.getToDoDetail()
+    this.canUpdate = true
+  }
+
+  async getToDoDetail() {
+    const value = await getTodoDetailApi(this.listId)
+    this.todoNodes = value.data.content
+    this.folder = value.data.folder
+    this.title = value.data.name
+    this.isNeedLogin = !value.data.can_edit
+    document.title = this.title
+    this.loading.page = false
   }
 
   private changeInput(val: boolean, node: TodoItemProp) {
@@ -402,6 +405,7 @@ export default class Folder extends Vue {
 
   private toggleEdit(node: TodoItemProp, isEdit = true) {
     node.editAble = isEdit
+    this.canUpdate = !isEdit
     if (!isEdit) {
       this.canUpdate = true
       this.updateTask(this)
@@ -483,13 +487,13 @@ export default class Folder extends Vue {
 
   @Watch('todoNodes', { deep: true })
   handleWatch() {
-    this.updateTask(this)
+    if (this.canUpdate) {
+      this.updateTask(this)
+    }
   }
 
   private updateTask = debounce((_this) => {
-    if (_this.canUpdate) {
-      updateItemsApi({ content: _this.todoNodes }, _this.listId)
-    }
+    updateItemsApi({ content: _this.todoNodes }, _this.listId)
   }, 1500)
 
   // @Watch('tab')
@@ -537,9 +541,9 @@ export default class Folder extends Vue {
         .q-input {
           width: 80%;
         }
-        span {
-          min-width: 55px;
-        }
+        //span {
+        //  min-width: 55px;
+        //}
         &:hover{
           .q-icon {
             visibility: visible !important;
