@@ -103,7 +103,7 @@
       </div>
       <!-- 操作小图标-->
       <q-page-sticky position="bottom-right" :offset="[32, 32]">
-        <q-fab glossy direction="up" color="primary">
+        <q-fab icon="keyboard_arrow_up" direction="up" color="primary">
           <!-- 取消置顶-->
           <q-fab-action @click="top(listId, true)" color="primary"  >
             <template>
@@ -188,7 +188,7 @@ export default class Folder extends Vue {
   private isNeedLogin = false
   private shareLink = ''
   private currentCategory:TodoItemProp | null = null
-  private selectedNode: string | null = null
+  // private selectedNode: string | null = null
 
   private loading = {
     page: true
