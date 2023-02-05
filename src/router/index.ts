@@ -49,8 +49,8 @@ const routes: Array<RouteConfig> = [
       {
         path: '/about',
         name: 'About',
-        meta: { hidden: true },
-        component: () => import(/* webpackChunkName: "to-do-lis" */ '@/views/About.vue')
+        meta: { title: '关于', icon: 'info' },
+        component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue')
       }
     ]
   },
