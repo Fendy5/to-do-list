@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative min-h">
     <to-do-list v-if="listId" :list-id="listId" />
     <q-spinner-cube v-else class="center" size="5em" color="primary" />
   </div>
@@ -28,3 +28,9 @@ export default class Folder extends Vue {
 
 }
 </script>
+
+<style lang='scss'>
+.min-h {
+  min-height: 750px;
+}
+</style>
