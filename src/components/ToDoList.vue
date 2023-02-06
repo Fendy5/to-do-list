@@ -13,7 +13,7 @@
         <div class="todo-list">
           <q-tabs v-model="tab" narrow-indicator dense align="justify">
             <q-tab class="text-primary" name="all" icon="apps" label="全部" />
-            <q-tab class="text-orange" name="todo" icon="event_available" label="待完成" />
+            <q-tab class="text-orange" name="todo" icon="img:/static/images/wait.svg" label="待完成" />
             <q-tab class="text-green" name="done" icon="task_alt" label="已完成" />
           </q-tabs>
           <div class="todo-header fx-between">
@@ -187,6 +187,7 @@ export default class Folder extends Vue {
   private isNeedLogin = false
   private shareLink = ''
   private currentCategory:TodoItemProp | null = null
+  // private waitIcon = require('../../public/static/images/wait.svg')
   // private selectedNode: string | null = null
 
   private loading = {
