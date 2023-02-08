@@ -65,7 +65,7 @@
           <p class="text-secondary">还没有数据哦~</p>
         </div>
       </div>
-      <page-sticky @click="addTodoList" />
+      <page-sticky action-type='list' @click="addTodoList" />
     </div>
   </div>
 </template>

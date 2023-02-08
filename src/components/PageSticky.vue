@@ -1,17 +1,13 @@
 <template>
   <div>
-    <q-page-sticky position="bottom-right" :offset="[64, 64]">
-      <q-fab
-          icon="add"
-          direction="up"
-          color="primary"
-      >
-        <q-fab-action @click="prompt=true" color="primary" >
+    <q-page-sticky position="bottom-right" :offset="[32, 32]">
+      <q-fab icon="add" direction="up" color="primary">
+        <q-fab-action v-if='actionType==="folder"' external-label label='文件夹' label-position="left" @click="prompt=true" color="primary" >
           <template>
             <svg-icon class="text-white wh-30" icon-class="folder" />
           </template>
         </q-fab-action>
-        <q-fab-action @click="prompt=true" color="primary"  >
+        <q-fab-action v-else external-label label='List' label-position="left" @click="prompt=true" color="primary"  >
           <template>
             <svg-icon class="text-white wh-25" icon-class="todo-list" />
           </template>
@@ -38,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component({
   name: 'PageSticky'
@@ -52,6 +48,12 @@ export default class PageSticky extends Vue {
     this.prompt = false
     this.name = ''
   }
+
+  @Prop({
+    type: String,
+    default: 'folder'
+  })
+  readonly actionType!:string
 
 }
 </script>

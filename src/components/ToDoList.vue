@@ -104,14 +104,16 @@
       <!-- 操作小图标-->
       <q-page-sticky position="bottom-right" :offset="[32, 32]">
         <q-fab icon="keyboard_arrow_up" direction="up" color="primary">
+          <!-- 清空列表-->
+          <q-fab-action @click="clearAll" icon='delete_sweep' external-label label='清空' label-position="left"  color="primary" ></q-fab-action>
           <!-- 取消置顶-->
-          <q-fab-action @click="top(listId, true)" color="primary"  >
+          <q-fab-action @click="top(listId, isTop)" external-label :label='isTop?"取消置顶":"置顶"' label-position="left"  color="primary"  >
             <template>
               <svg-icon class="text-white wh-25" icon-class="cancel-pin" />
             </template>
           </q-fab-action>
           <!-- 分享-->
-          <q-fab-action @click="authDialog=true" color="primary" >
+          <q-fab-action @click="authDialog=true" external-label label='分享' label-position="left"  color="primary" >
             <template>
               <svg-icon class="text-white wh-25" icon-class="share" />
             </template>
@@ -153,11 +155,10 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue, Watch} from "vue-property-decorator"
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import Draggable from 'vuedraggable'
-import { setTodoAuthApi, topApi, updateItemsApi } from '@/api/todo-lists'
-import {getTodoDetailApi} from "@/api/todo-lists"
-import { copyText } from "@/utils"
+import { getTodoDetailApi, setTodoAuthApi, topApi, updateItemsApi } from '@/api/todo-lists'
+import { copyText } from '@/utils'
 import { Notify } from 'quasar'
 import { TodoItemProp } from '@/types/todo-list'
 import { debounce } from 'lodash'
@@ -186,6 +187,7 @@ export default class Folder extends Vue {
   private linkDialog = false
   private isNeedLogin = false
   private shareLink = ''
+  private isTop = false
   private currentCategory:TodoItemProp | null = null
   // private waitIcon = require('../../public/static/images/wait.svg')
   // private selectedNode: string | null = null
@@ -295,6 +297,7 @@ export default class Folder extends Vue {
     this.todoNodes = value.data.content
     this.folder = value.data.folder
     this.title = value.data.name
+    this.isTop = value.data.is_top
     this.isNeedLogin = !value.data.can_edit
     document.title = this.title
     this.loading.page = false
@@ -384,7 +387,8 @@ export default class Folder extends Vue {
 
   // 置顶
   private async top(id: string, cancel = false) {
-    await topApi(id, { cancel })
+    const { data } = await topApi(id, { cancel })
+    this.isTop = data[0].is_top
   }
 
   // 复制链接
@@ -395,6 +399,11 @@ export default class Folder extends Vue {
       position: 'top',
       message: '复制成功'
     })
+  }
+
+  // 清空列表
+  private clearAll() {
+    this.todoNodes = []
   }
 
   // private toggleEdit(index: number) {
@@ -632,5 +641,13 @@ export default class Folder extends Vue {
 }
 ::v-deep .q-tree--no-connectors {
   text-align: center;
+}
+::v-deep .q-tab__content {
+  img {
+    width: 19px;
+  }
+}
+.fs-25 {
+  font-size: 25px;
 }
 </style>
