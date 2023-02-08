@@ -2,11 +2,11 @@
   <div>data-statistics</div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {}
-  },
+<script lang='ts'>
+import { Vue } from 'vue-property-decorator'
+
+export default class DataStatistics extends Vue {
+
 }
 </script>
 

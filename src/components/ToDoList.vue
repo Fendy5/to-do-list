@@ -503,7 +503,7 @@ export default class Folder extends Vue {
     }
   }
 
-  private updateTask = debounce((_this) => {
+  private updateTask = debounce((_this: Folder) => {
     updateItemsApi({ content: _this.todoNodes }, _this.listId)
   }, 1500)
 

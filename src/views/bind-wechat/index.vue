@@ -14,17 +14,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'BindWechat',
-  created() {
-    this.status = this.$route.query.result
-  },
-  data() {
-    return {
-      status: 'fail'
-    }
-  },
+<script lang='ts'>
+import { Vue } from 'vue-property-decorator'
+
+export default class BindWechat extends Vue {
+  private status = this.$route.query.result
 }
 </script>
 
