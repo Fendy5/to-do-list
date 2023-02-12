@@ -2,13 +2,6 @@
   <div>
     <q-spinner-cube v-if="loading.page" class="center" size="5em" color="primary" />
     <template v-else>
-      <div class="p-16">
-        <q-breadcrumbs>
-          <q-breadcrumbs-el icon="home" to="/todo-sets" />
-          <q-breadcrumbs-el :label="`${folder.name}`" icon="folder" :to="`/folder/${folder.fd_id}`" />
-          <q-breadcrumbs-el :label="title" icon="inventory" />
-        </q-breadcrumbs>
-      </div>
       <div class="flex-center">
         <div class="todo-list">
           <q-tabs v-model="tab" narrow-indicator dense align="justify">
@@ -22,25 +15,7 @@
           </div>
           <div class="all-list">
             <div class="todo-main">
-              <q-scroll-area v-if="todoNodes.length" :thumb-style="thumbStyle" style="height: 365px;">
-<!--                <draggable v-if="allList.length" :list="allList" class="list-group" ghost-class="ghost" handle=".cursor-move" @start="dragging = true" @end="dragging = false">-->
-<!--                  <transition-group name="list-complete">-->
-<!--                    <div v-for="(i,index) in allList"  class="list-complete-item" :key="i.id">-->
-<!--                      <div v-if="!i.done" class="todo-item">-->
-<!--                        <q-checkbox @input="changeInput" v-model="i.done" />-->
-<!--                        <q-item-section>-->
-<!--                          <div @dblclick="toggleEdit(index)" class="fx-between px-16">-->
-<!--                            <q-item-label v-if="!i.editAble">{{ i.label }}</q-item-label>-->
-<!--                            <q-input v-else v-model="i.label" @blur="toggleEdit(index)" @keyup.enter="toggleEdit(index)" autofocus placeholder="添加任务" />-->
-<!--                            <span>-->
-<!--                            <q-icon class="invisible cursor-move px-8" size="24px" name="drag_handle" />-->
-<!--                            <q-icon class="cursor-pointer invisible" color="red" @click="deleteTask(index)" size="20px" name="delete" />-->
-<!--                          </span>-->
-<!--                          </div>-->
-<!--                        </q-item-section>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </transition-group>-->
+              <q-scroll-area v-if="todoNodes.length">
                 <q-tree :filter='tab' no-results-label='没有任何结果' :filter-method='filterStatus' :nodes="todoNodes" no-connectors node-key='id'>
                   <template v-slot:default-header='{node}'>
                     <div class="list-complete-item">
@@ -61,28 +36,6 @@
                     </div>
                   </template>
                 </q-tree>
-<!--                </draggable>-->
-<!--                <transition-group name="list-complete">-->
-<!--                  <div  v-for="(i,index) in allList"  class="list-complete-item" :key="i.id" >-->
-<!--                    <div v-if="i.done" class="todo-item">-->
-<!--                      <q-checkbox @input="changeInput" v-model="i.done" />-->
-<!--                      <q-item-section>-->
-<!--                        <div @dblclick="toggleEdit(index)" class="fx-between px-16">-->
-<!--                          <q-item-label :class="{'text-secondary': i.done,'text-through': i.done}" v-if="!i.editAble">{{ i.label }}</q-item-label>-->
-<!--                          <q-input v-else v-model="i.label" @blur="toggleEdit(index)" @keyup.enter="toggleEdit(index)" autofocus placeholder="添加任务" />-->
-<!--                          <span class="text-right">-->
-<!--                           <q-icon class="cursor-pointer invisible" color="red" @click="deleteTask(index)" size="20px" name="delete" />-->
-<!--                          </span>-->
-<!--                        </div>-->
-<!--                      </q-item-section>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                  <q-tree-->
-<!--                    :nodes="todoNodes"-->
-<!--                    node-key="label"-->
-<!--                    no-connectors-->
-<!--                  />-->
-<!--                </transition-group>-->
               </q-scroll-area>
               <div class="text-center pt-32" v-else>
                 <svg-icon  icon-class="no-data" />
@@ -182,7 +135,6 @@ export default class Folder extends Vue {
   private tab = 'all'
   private canUpdate = false
   private title = ''
-  private folder = ''
   private authDialog = false
   private linkDialog = false
   private isNeedLogin = false
@@ -296,11 +248,11 @@ export default class Folder extends Vue {
   async getToDoDetail() {
     const value = await getTodoDetailApi(this.listId)
     this.todoNodes = value.data.content
-    this.folder = value.data.folder
     this.title = value.data.name
     this.isTop = value.data.is_top
     this.isNeedLogin = !value.data.can_edit
     document.title = this.title
+    this.$emit('folder', { ...value.data.folder, title: this.title })
     this.loading.page = false
   }
 
@@ -565,6 +517,9 @@ export default class Folder extends Vue {
         }
       }
     }
+    .q-scrollarea {
+      height: 375px;
+    }
   }
   .todo-footer {
     position: absolute;
@@ -574,9 +529,6 @@ export default class Folder extends Vue {
   }
 }
 @media (max-width: 450px) {
-  .todo-main {
-    height: calc(100vh - 375px);
-  }
   .todo-list {
     width: 100%;
     box-shadow: none;
@@ -585,6 +537,12 @@ export default class Folder extends Vue {
     top: unset;
     transform: unset;
     padding: 0 24px 24px 24px;
+    .todo-main {
+      height: calc(100vh - 200px);
+      .q-scrollarea {
+        height: calc(100vh - 180px);
+      }
+    }
   }
   .todo-footer {
     position: static !important;

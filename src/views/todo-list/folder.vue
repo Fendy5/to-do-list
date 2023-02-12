@@ -77,7 +77,7 @@ import { addTodoListsApi, deleteTodoListsApi, getTodoListsApi, reuseTodoListApi,
 import { ReuseToDoListProp } from '@/types/todo-list'
 import { getFoldersApi } from '@/api/folders'
 
-interface TodoListProp {
+export interface TodoListProp {
   folder_id: string
   id: number
   is_top: boolean
