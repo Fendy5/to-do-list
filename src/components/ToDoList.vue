@@ -23,14 +23,15 @@
                         <q-checkbox @input="(val) => changeInput(val,node)" v-model="node.done" />
                         <q-item-section @dblclick='() => { toggleEdit(node, true) }'>
                           <div v-if='!node.editAble' class="fx-between px-16">
-                            <span>{{node.label}}</span>
+                            <span class='text-left'>{{node.label}}</span>
                             <span class='handle-icon' v-if='!node.isParent'>
                               <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, true)' name='north' />
                               <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, false)' name='south' />
                               <q-icon @click.stop='deleteTask(node.id)' class="danger-text invisible" size="20px" name="delete" />
                             </span>
                           </div>
-                          <q-input v-else autofocus v-model="node.label" @blur='toggleEdit(node, false)' @keyup.enter="toggleEdit(node, false)" placeholder="添加任务" />
+<!--                          <input v-model="node.label" v-else type='text'>-->
+                          <q-input v-else @click.stop autofocus v-model="node.label" @blur='toggleEdit(node, false)' @keyup.enter="toggleEdit(node, false)" placeholder="添加任务" />
                         </q-item-section>
                       </div>
                     </div>
@@ -584,7 +585,7 @@ export default class Folder extends Vue {
 }
 .handle-icon {
   text-align: right;
-  padding-right: 12px;
+  //padding-right: 12px;
   padding-top: 4px;
   padding-bottom: 4px;
   i {

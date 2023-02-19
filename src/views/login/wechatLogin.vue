@@ -1,5 +1,5 @@
 <template>
-<!--  <div>{{ token }}</div>-->
+  <div>{{ token }}</div>
 </template>
 
 <script lang="ts">
