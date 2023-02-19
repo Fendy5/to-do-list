@@ -143,6 +143,7 @@ export default class Folder extends Vue {
   private isTop = false
   private isSticky = false // 键盘是否调起
   private currentCategory:TodoItemProp | null = null
+  private selectedText = ''
   // private waitIcon = require('../../public/static/images/wait.svg')
   // private selectedNode: string | null = null
 
@@ -243,7 +244,7 @@ export default class Folder extends Vue {
 
   async created() {
     await this.getToDoDetail()
-    this.canUpdate = true
+    // this.canUpdate = true
   }
 
   async getToDoDetail() {
@@ -368,9 +369,14 @@ export default class Folder extends Vue {
   // }
 
   private toggleEdit(node: TodoItemProp, isEdit = true) {
+    if (isEdit) {
+      this.selectedText = node.label
+    }
     node.editAble = isEdit
-    this.canUpdate = !isEdit
-    if (!isEdit) {
+    if (node.label !== this.selectedText) {
+      this.canUpdate = !isEdit
+    }
+    if (!isEdit && node.label !== this.selectedText) {
       this.canUpdate = true
       this.updateTask(this)
     }
@@ -458,6 +464,7 @@ export default class Folder extends Vue {
 
   private updateTask = debounce((_this: Folder) => {
     updateItemsApi({ content: _this.todoNodes }, _this.listId)
+    _this.canUpdate = false
   }, 1500)
 
   // @Watch('tab')
