@@ -300,8 +300,23 @@ export default class Folder extends Vue {
   }
 
   private moveNode(id: string, isUp: boolean) {
+    const move = (dataSource: TodoItemProp[]) => {
+      const len = dataSource.length
+      const selectedIndex = dataSource.findIndex(i => i.id === id)
+      const nodeArr = dataSource.splice(selectedIndex, 1)
+      let start
+      if (selectedIndex === 0 && isUp) {
+        start = 0
+      } else if (!isUp && selectedIndex === len - 1) {
+        start = selectedIndex
+      } else {
+        start = isUp ? selectedIndex - 1 : selectedIndex + 1
+        this.canUpdate = true
+      }
+      dataSource.splice(start, 0, nodeArr[0])
+    }
+
     if (id) {
-      this.canUpdate = true
       const parentNode = this.getParentNodeById(this.todoNodes, id)
       // 二级节点
       if (parentNode) {
@@ -310,17 +325,6 @@ export default class Folder extends Vue {
         // 一级节点
         move(this.todoNodes)
       }
-    }
-    function move(dataSource: TodoItemProp[]) {
-      const selectedIndex = dataSource.findIndex(i => i.id === id)
-      const nodeArr = dataSource.splice(selectedIndex, 1)
-      let start
-      if (selectedIndex === 0 && isUp) {
-        start = 0
-      } else {
-        start = isUp ? selectedIndex - 1 : selectedIndex + 1
-      }
-      dataSource.splice(start, 0, nodeArr[0])
     }
   }
 
