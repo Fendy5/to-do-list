@@ -301,6 +301,7 @@ export default class Folder extends Vue {
 
   private moveNode(id: string, isUp: boolean) {
     if (id) {
+      this.canUpdate = true
       const parentNode = this.getParentNodeById(this.todoNodes, id)
       // 二级节点
       if (parentNode) {
@@ -408,6 +409,7 @@ export default class Folder extends Vue {
   }
 
   private addTask() {
+    this.canUpdate = true
     if (this.text) {
       const randomString = Math.random().toString(36).slice(-8)
       const task = {label: this.text, done: false, editAble: false, id: randomString, children: []}
