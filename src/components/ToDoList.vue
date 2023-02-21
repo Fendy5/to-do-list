@@ -22,8 +22,8 @@
                       <div class="todo-item">
                         <q-checkbox @input="(val) => changeInput(val,node)" v-model="node.done" />
                         <q-item-section @dblclick='() => { toggleEdit(node, true) }'>
-                          <div v-if='!node.editAble' class="fx-between px-16">
-                            <span class='text-left'>{{node.label}}</span>
+                          <div v-if='!node.editAble' class="fx-between px-16 text-content">
+                            <span class='content'>{{node.label}}</span>
                             <span class='handle-icon' v-if='!node.isParent'>
                               <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, true)' name='north' />
                               <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, false)' name='south' />
@@ -591,6 +591,26 @@ export default class Folder extends Vue {
 }
 .list-complete-item {
   width: 100%;
+  .text-content {
+    .content {
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 190px;
+    }
+  }
+  .handle-icon {
+    text-align: right;
+    //padding-right: 12px;
+    min-width: 85px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    i {
+      margin-left: 8px;
+      cursor: pointer;
+    }
+  }
 }
 .handle-icon {
   text-align: right;
