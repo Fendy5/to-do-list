@@ -6,6 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "release:patch": "git stash && npm version patch && git push && git stash pop",
+    "release:minor": "git stash && npm version minor && git push && git stash pop",
+    "release:major": "git stash && npm version major && git push && git stash pop",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
