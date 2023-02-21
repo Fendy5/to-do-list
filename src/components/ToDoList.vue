@@ -15,7 +15,7 @@
           </div>
           <div class="all-list">
             <div class="todo-main">
-              <q-scroll-area v-if="todoNodes.length">
+              <q-scroll-area :thumb-style="thumbStyle" v-if="todoNodes.length">
                 <q-tree :filter='tab' no-results-label='没有任何结果' :filter-method='filterStatus' :nodes="todoNodes" no-connectors node-key='id'>
                   <template v-slot:default-header='{node}'>
                     <div class="list-complete-item">
