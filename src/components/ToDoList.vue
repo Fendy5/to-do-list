@@ -44,8 +44,8 @@
               </div>
             </div>
             <div class="todo-footer flex">
-              <q-select clearable class='select-label' color="purple-12" transition-show="jump-up" transition-hide="jump-up" v-model="currentCategory" :options="todoNodes"></q-select>
-              <q-input @focus='isSticky=true' @blur='isSticky=false' class='flex-1' @keyup.enter="addTask" v-model="text" label="添加一个任务">
+              <q-select dense filled clearable class='select-label' color="purple-12" transition-show="jump-up" transition-hide="jump-up" v-model="currentCategory" :options="todoNodes"></q-select>
+              <q-input dense filled @focus='isSticky=true' @blur='isSticky=false' class='flex-1' @keyup.enter="addTask" v-model="text" label="添加一个任务">
 <!--                <template v-slot:prepend>-->
 <!--&lt;!&ndash;                  <q-icon name="add" />&ndash;&gt;-->
 <!--                 -->
@@ -56,7 +56,7 @@
         </div>
       </div>
       <!-- 操作小图标-->
-      <q-page-sticky v-show='!isSticky' position="bottom-right" :offset="[32, 32]">
+      <q-page-sticky v-show='!isSticky' position="bottom-right" :offset="[32, 90]">
         <q-fab icon="keyboard_arrow_up" direction="up" color="primary">
           <!-- 清空列表-->
           <q-fab-action @click="clearAll" icon='delete_sweep' external-label label='清空' label-position="left"  color="primary" ></q-fab-action>
@@ -534,12 +534,44 @@ export default class Folder extends Vue {
     .q-scrollarea {
       height: 375px;
     }
+    .list-complete-item {
+      transition: all 1s;
+      //margin-right: 10px;
+      width: 100%;
+      .text-content {
+        .content {
+          text-align: left;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 190px;
+        }
+      }
+      .handle-icon {
+        text-align: right;
+        //padding-right: 12px;
+        min-width: 85px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        i {
+          margin-left: 8px;
+          cursor: pointer;
+        }
+      }
+    }
   }
   .todo-footer {
     position: absolute;
     background: #fafafa;
     bottom: 15px;
     width: 90%;
+    ::v-deep .q-field--filled .q-field__control {
+      border-radius: 0;
+      padding-right: 0;
+    }
+    ::v-deep .q-field__marginal {
+      font-size: 20px;
+    }
   }
 }
 @media (max-width: 450px) {
@@ -552,9 +584,14 @@ export default class Folder extends Vue {
     transform: unset;
     padding: 0 24px 24px 24px;
     .todo-main {
-      height: calc(100vh - 200px);
+      //height: calc(100vh - 200px);
       .q-scrollarea {
-        height: calc(100vh - 180px);
+        height: calc(100vh - 280px);
+      }
+    }
+    .text-content {
+      .content {
+        width: 150px !important;
       }
     }
   }
@@ -567,10 +604,6 @@ export default class Folder extends Vue {
   opacity: 0.5;
   background: #c8ebfb;
 }
-.list-complete-item {
-  transition: all 1s;
-  //margin-right: 10px;
-}
 .list-complete-enter, .list-complete-leave-to
   /* .list-complete-leave-active for below version 2.1.8 */ {
   opacity: 0;
@@ -582,8 +615,8 @@ export default class Folder extends Vue {
 .select-label {
   ::v-deep .q-field__native {
     span {
-      line-height: 44px;
-      width: 50px;
+      //line-height: 44px;
+      width: 40px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -591,39 +624,6 @@ export default class Folder extends Vue {
   }
   ::v-deep .q-field__append {
     padding-left: 0;
-  }
-}
-.list-complete-item {
-  width: 100%;
-  .text-content {
-    .content {
-      text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: 190px;
-    }
-  }
-  .handle-icon {
-    text-align: right;
-    //padding-right: 12px;
-    min-width: 85px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    i {
-      margin-left: 8px;
-      cursor: pointer;
-    }
-  }
-}
-.handle-icon {
-  text-align: right;
-  //padding-right: 12px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  i {
-    margin-left: 8px;
-    cursor: pointer;
   }
 }
 ::v-deep .q-tree__node--selected .q-tree__node-header-content {
