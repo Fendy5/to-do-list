@@ -38,14 +38,14 @@
                   </template>
                 </q-tree>
               </q-scroll-area>
-              <div class="text-center pt-32" v-else>
+              <q-scroll-area class="text-center pt-32" v-else>
                 <svg-icon  icon-class="no-data" />
                 <p class="text-secondary">还没有数据哦~</p>
-              </div>
+              </q-scroll-area>
             </div>
             <div class="todo-footer flex">
               <q-select dense filled clearable class='select-label' color="purple-12" transition-show="jump-up" transition-hide="jump-up" v-model="currentCategory" :options="todoNodes"></q-select>
-              <q-input dense filled @focus='isSticky=true' @blur='isSticky=false' class='flex-1' @keyup.enter="addTask" v-model="text" label="添加一个任务">
+              <q-input dense filled @focus='isSticky=true' @blur='isSticky=false' class='flex-1' @keyup.enter="addTask" v-model="text" label="添加一个任务(回车键确认)">
 <!--                <template v-slot:prepend>-->
 <!--&lt;!&ndash;                  <q-icon name="add" />&ndash;&gt;-->
 <!--                 -->
@@ -586,7 +586,7 @@ export default class Folder extends Vue {
     .todo-main {
       //height: calc(100vh - 200px);
       .q-scrollarea {
-        height: calc(100vh - 280px);
+        height: calc(100vh - 285px);
       }
     }
     .text-content {
