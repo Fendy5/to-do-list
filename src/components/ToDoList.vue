@@ -23,7 +23,7 @@
                         <q-checkbox @input="(val) => changeInput(val,node)" v-model="node.done" />
                         <q-item-section @dblclick='() => { toggleEdit(node, true) }'>
                           <div v-if='!node.editAble' class="fx-between px-16 text-content">
-                            <span class='content'>{{node.label}}</span>
+                            <span :style='isMobile?{width: `${labelWidth - 260}px`}: {}' class='content'>{{node.label}}</span>
                             <span class='handle-icon' v-if='!node.isParent'>
                               <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, true)' name='north' />
                               <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, false)' name='south' />
@@ -112,7 +112,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import Draggable from 'vuedraggable'
 import { getTodoDetailApi, setTodoAuthApi, topApi, updateItemsApi } from '@/api/todo-lists'
-import { copyText } from '@/utils'
+import { copyText, isMobile } from '@/utils'
 import { Notify } from 'quasar'
 import { TodoItemProp } from '@/types/todo-list'
 import { debounce } from 'lodash'
@@ -144,6 +144,8 @@ export default class Folder extends Vue {
   private isSticky = false // 键盘是否调起
   private currentCategory:TodoItemProp | null = null
   private selectedText = ''
+  private labelWidth = window.screen.width
+  private isMobile = isMobile()
   // private waitIcon = require('../../public/static/images/wait.svg')
   // private selectedNode: string | null = null
 
@@ -586,12 +588,12 @@ export default class Folder extends Vue {
     .todo-main {
       //height: calc(100vh - 200px);
       .q-scrollarea {
-        height: calc(100vh - 285px);
+        height: calc(100vh - 275px);
       }
     }
     .text-content {
       .content {
-        width: 150px !important;
+        width: 150px;
       }
     }
   }
