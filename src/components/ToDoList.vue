@@ -16,7 +16,7 @@
           <div class="all-list">
             <div class="todo-main">
               <q-scroll-area :thumb-style="thumbStyle" v-if="todoNodes.length">
-                <q-tree :filter='tab' no-results-label='没有任何结果' :filter-method='filterStatus' :nodes="todoNodes" no-connectors node-key='id'>
+                <q-tree :expanded.sync="expanded" :filter='tab' no-results-label='没有任何结果' :filter-method='filterStatus' :nodes="todoNodes" no-connectors node-key='id'>
                   <template v-slot:default-header='{node}'>
                     <div class="list-complete-item">
                       <div class="todo-item">
@@ -146,6 +146,7 @@ export default class Folder extends Vue {
   private selectedText = ''
   private labelWidth = window.screen.width
   private isMobile = isMobile()
+  private expanded = ['']
   // private waitIcon = require('../../public/static/images/wait.svg')
   // private selectedNode: string | null = null
 
@@ -398,6 +399,7 @@ export default class Folder extends Vue {
       persistent: true
     }).onOk(() => {
       if (id) {
+        this.canUpdate = true
         const parentNode = this.getParentNodeById(this.todoNodes, id)
         if (parentNode) {
           const idx = parentNode.children?.findIndex(value => id === value.id)
@@ -422,6 +424,7 @@ export default class Folder extends Vue {
       // this.allList.push(task)
       if (this.currentCategory) {
         this.currentCategory.children?.push(task)
+        this.expanded = [this.currentCategory?.id]
       } else {
         this.todoNodes.push(task)
       }
@@ -511,7 +514,7 @@ export default class Folder extends Vue {
     border-bottom: 1px dashed #dadada;
   }
   .todo-main {
-    background-color: rgba(0, 0, 0, 0.01);
+    background-color: rgba(0, 0, 0, 0.015);
     min-height: 375px;
     .todo-item {
       display: flex;
@@ -598,6 +601,7 @@ export default class Folder extends Vue {
     }
   }
   .todo-footer {
+    margin-top: 12px;
     position: static !important;
     width: 100% !important;
   }

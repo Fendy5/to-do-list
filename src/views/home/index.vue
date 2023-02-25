@@ -41,6 +41,6 @@ export default class Folder extends Vue {
 
 <style lang='scss'>
 .min-h {
-  min-height: 750px;
+  //min-height: 750px;
 }
 </style>
