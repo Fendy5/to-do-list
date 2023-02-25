@@ -1,4 +1,7 @@
 @import "common";
+body {
+  margin-bottom: 0 !important;
+}
 .folder-list {
   display: grid;
   grid-gap: 15px;
