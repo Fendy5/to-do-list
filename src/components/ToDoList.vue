@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class='h-full'>
     <q-spinner-cube v-if="loading.page" class="center" size="5em" color="primary" />
     <template v-else>
-      <div class="flex-center">
+      <div class="flex h-full">
         <div class="todo-list">
           <q-tabs v-model="tab" narrow-indicator dense align="justify">
             <q-tab class="text-primary" name="all" icon="apps" label="全部" />
@@ -43,15 +43,11 @@
                 <p class="text-secondary">还没有数据哦~</p>
               </q-scroll-area>
             </div>
-            <div class="todo-footer flex">
-              <q-select dense filled clearable class='select-label' color="purple-12" transition-show="jump-up" transition-hide="jump-up" v-model="currentCategory" :options="todoNodes"></q-select>
-              <q-input dense filled @focus='isSticky=true' @blur='isSticky=false' class='flex-1' @keyup.enter="addTask" v-model="text" label="添加一个任务(回车键确认)">
-<!--                <template v-slot:prepend>-->
-<!--&lt;!&ndash;                  <q-icon name="add" />&ndash;&gt;-->
-<!--                 -->
-<!--                </template>-->
-              </q-input>
-            </div>
+          </div>
+          <div class="todo-footer flex">
+            <q-select dense filled clearable class='select-label' color="purple-12" transition-show="jump-up" transition-hide="jump-up" v-model="currentCategory" :options="todoNodes"></q-select>
+            <q-input dense filled @focus='isSticky=true' @blur='isSticky=false' class='flex-1' @keyup.enter="addTask" v-model="text" label="添加一个任务(回车键确认)">
+            </q-input>
           </div>
         </div>
       </div>
@@ -514,8 +510,9 @@ export default class Folder extends Vue {
     border-bottom: 1px dashed #dadada;
   }
   .todo-main {
-    background-color: rgba(0, 0, 0, 0.015);
-    min-height: 375px;
+    background-color: whitesmoke;
+    //min-height: 375px;
+    height: 100%;
     .todo-item {
       display: flex;
       //padding: 8px 0;
@@ -580,6 +577,12 @@ export default class Folder extends Vue {
   }
 }
 @media (max-width: 450px) {
+  .all-list {
+    //height: calc(100vh - 290px);
+    //height: 400px;
+    //height: calc(100vh)
+    flex: 1;
+  }
   .todo-list {
     width: 100%;
     box-shadow: none;
@@ -587,11 +590,19 @@ export default class Folder extends Vue {
     left: unset;
     top: unset;
     transform: unset;
-    padding: 0 24px 24px 24px;
+    padding: 0 24px 0 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     .todo-main {
+      flex: 1;
+      //height: calc(100vh - 290px);
       //height: calc(100vh - 200px);
       .q-scrollarea {
-        height: calc(100vh - 275px);
+        //height: calc(100vh - 290px);
+        //height: 400px;
+
+        height: 100%;
       }
     }
     .text-content {
@@ -601,8 +612,8 @@ export default class Folder extends Vue {
     }
   }
   .todo-footer {
-    margin-top: 12px;
-    position: static !important;
+    padding-top: 12px;
+    position: sticky !important;
     width: 100% !important;
   }
 }
