@@ -8,6 +8,7 @@ import '@/permission'
 import '@/assets/icons'
 
 Vue.config.productionTip = false
+window.Pusher = require('pusher-js')
 
 new Vue({
   router,

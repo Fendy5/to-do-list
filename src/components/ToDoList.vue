@@ -52,7 +52,7 @@
         </div>
       </div>
       <!-- 操作小图标-->
-      <q-page-sticky v-show='!isSticky' position="bottom-right" :offset="[32, 90]">
+      <q-page-sticky v-if='!isDisabled' position="bottom-right" :offset="[32, 90]">
         <q-fab icon="keyboard_arrow_up" direction="up" color="primary">
           <!-- 清空列表-->
           <q-fab-action @click="clearAll" icon='delete_sweep' external-label label='清空' label-position="left"  color="primary" ></q-fab-action>
@@ -112,6 +112,7 @@ import { copyText, isMobile } from '@/utils'
 import { Notify } from 'quasar'
 import { TodoItemProp } from '@/types/todo-list'
 import { debounce } from 'lodash'
+import { echo } from '@/utils/echo'
 
 export interface Task {
   id: string
@@ -150,56 +151,7 @@ export default class Folder extends Vue {
     page: true
   }
 
-  private todoNodes: TodoItemProp[] = [
-    // {
-    //   id: '23423432',
-    //   label: '默认',
-    //   isParent: true,
-    //   editAble: true,
-    //   done: false,
-    //   children: [
-    //     {
-    //       "id": "updw41oj",
-    //       "done": false,
-    //       "label": "两道算法(30分钟)",
-    //       "editAble": false
-    //     },
-    //     {
-    //       "id": "a2ph4je9",
-    //       "done": false,
-    //       "label": "一篇源码解读(30分钟)",
-    //       "editAble": false
-    //     },
-    //     {
-    //       "id": "kkiu8oge",
-    //       "done": false,
-    //       "label": "React Native(30分钟)",
-    //       "editAble": false
-    //     }
-    //   ]
-    // },
-    // {
-    //   id: '9jdfj9wf',
-    //   label: '默认2默认2默认2默认2默认2222222222默认默认默认默认默认默认',
-    //   isParent: true,
-    //   editAble: true,
-    //   done: false,
-    //   children: [
-    //     {
-    //       "id": "updw413oj",
-    //       "done": false,
-    //       "label": "两道算法(30分钟)",
-    //       "editAble": false
-    //     },
-    //     {
-    //       "id": "kkiu8o2ge",
-    //       "done": false,
-    //       "label": "React Native(30分钟)",
-    //       "editAble": false
-    //     }
-    //   ]
-    // }
-  ]
+  private todoNodes: TodoItemProp[] = []
 
   private thumbStyle = {
     right: '2px',
@@ -243,7 +195,17 @@ export default class Folder extends Vue {
 
   async created() {
     await this.getToDoDetail()
-    // this.canUpdate = true
+    this.initWebsocket()
+  }
+
+  private initWebsocket() {
+    const channel = echo.private(`private.todo.1`)
+    channel.subscribed(() => {
+      console.log('subscribed~')
+    }).listen('.todo-message', (e: TodoItemProp[]) => {
+      console.log(e)
+      this.todoNodes = e
+    })
   }
 
   async getToDoDetail() {
