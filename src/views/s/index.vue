@@ -1,6 +1,7 @@
 <template>
-  <div class='mt-32'>
-    <to-do-list :list-id='listId' />
+  <div class='share'>
+    <to-do-list :is-disabled='true' :list-id='listId' />
+<!--    <q-input @blur='handleBlur' v-model='form' placeholder="添加任务" />-->
   </div>
 </template>
 
@@ -24,7 +25,9 @@ export default class ShareTodoList extends Vue {
 </script>
 
 <style lang='scss' scoped>
-.mt-32 {
-  margin-top: 32px;
+.share {
+  padding-top: 32px;
+  height: 100vh;
+  //height: calc(100vh - 32px);
 }
 </style>
