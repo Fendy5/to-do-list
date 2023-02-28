@@ -43,7 +43,7 @@ service.interceptors.response.use(
       if (res.code === 1) {
         setTimeout(() => {
           UserModule.ResetToken()
-          location.reload()
+          window.location.href = '/login'
         }, 1000)
       }
       return Promise.reject(res)

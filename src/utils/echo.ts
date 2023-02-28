@@ -8,8 +8,8 @@ export const echo = new Echo({
   cluster: 'mt1',
   authEndpoint: '/dev-api/broadcasting/auth',
   forceTLS: false,
-  wsPort: 6001,
-  wsHost: '127.0.0.1',
+  // wsPort: 6001,
+  wsHost: '/ws',
   encrypted: true,
   enabledTransports: ['ws', 'wss']
 })
