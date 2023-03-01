@@ -6,7 +6,7 @@ export const echo = new Echo({
   key: 'ws_todo',
   auth: { headers: { 'Authorization': 'Bearer ' + UserModule.token, Accept: 'application/json, text/plain, */*' } },
   cluster: 'mt1',
-  authEndpoint: `${process.env.VUE_APP_BASE_API}/broadcasting/auth`,
+  authEndpoint: `https://todo.fendy5.cn/api/v1/broadcasting/auth`,
   // forceTLS: false,
   // wsPort: 6001,
   wsHost: 'todo.fendy5.cn',
