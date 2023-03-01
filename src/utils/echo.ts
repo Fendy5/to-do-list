@@ -8,7 +8,7 @@ export const echo = new Echo({
   cluster: 'mt1',
   authEndpoint: '/dev-api/broadcasting/auth',
   // wsPort: 6001,
-  wsHost: 'wss://todo.fendy5.cn/ws',
+  wsHost: 'todo.fendy5.cn/ws',
   encrypted: true,
   enabledTransports: ['ws', 'wss']
 })
