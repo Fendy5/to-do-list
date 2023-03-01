@@ -200,8 +200,9 @@ export default class Folder extends Vue {
 
   private initWebsocket() {
     const channel = echo.private(`private.todo.1`)
+    console.log('init~')
     channel.subscribed(() => {
-      console.log('subscribed~')
+      console.log('已连接~')
     }).listen('.todo-message', (e: TodoItemProp[]) => {
       console.log(e)
       this.todoNodes = e
