@@ -7,9 +7,8 @@ export const echo = new Echo({
   auth: { headers: { 'Authorization': 'Bearer ' + UserModule.token, Accept: 'application/json' } },
   cluster: 'mt1',
   authEndpoint: '/dev-api/broadcasting/auth',
-  forceTLS: false,
   // wsPort: 6001,
-  wsHost: 'todo.fendy5.cn/ws',
+  wsHost: 'wss://todo.fendy5.cn/ws',
   encrypted: true,
   enabledTransports: ['ws', 'wss']
 })
