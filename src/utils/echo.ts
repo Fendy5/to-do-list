@@ -4,7 +4,7 @@ import { UserModule } from '@/store/modules/user'
 export const echo = new Echo({
   broadcaster: 'pusher',
   key: 'ws_todo',
-  auth: { headers: { 'Authorization': 'Bearer ' + UserModule.token } },
+  auth: { headers: { 'Authorization': 'Bearer ' + UserModule.token, Accept: 'application/json, text/plain, */*' } },
   cluster: 'mt1',
   authEndpoint: '/web/broadcasting/auth',
   // forceTLS: false,
