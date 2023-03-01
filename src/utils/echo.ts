@@ -9,7 +9,7 @@ export const echo = new Echo({
   authEndpoint: '/dev-api/broadcasting/auth',
   forceTLS: false,
   // wsPort: 6001,
-  wsHost: '/ws',
+  wsHost: 'todo.fendy5.cn/ws',
   encrypted: true,
   enabledTransports: ['ws', 'wss']
 })
