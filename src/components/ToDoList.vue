@@ -203,12 +203,7 @@ export default class Folder extends Vue {
     console.log('init~')
     channel.subscribed(() => {
       console.log('已连接~')
-      Notify.create({
-        type: 'positive',
-        position: 'top',
-        message: '连接成功'
-      })
-    }).listen('todo-message', (e: TodoItemProp[]) => {
+    }).listen('.todo-message', (e: TodoItemProp[]) => {
       console.log(e)
       this.todoNodes = e
     })
