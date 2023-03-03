@@ -379,11 +379,13 @@ export default class Folder extends Vue {
     this.canUpdate = true
     if (this.text) {
       const randomString = Math.random().toString(36).slice(-8)
-      const task = {label: this.text, done: false, editAble: false, id: randomString, children: []}
-      // this.allList.push(task)
+      const task = { label: this.text, done: false, editAble: false, id: randomString, children: [] }
       if (this.currentCategory) {
-        this.currentCategory.children?.push(task)
-        this.expanded = [this.currentCategory?.id]
+        const currentCategoryIndex = this.todoNodes.findIndex(i => i.id === this.currentCategory?.id)
+        if (currentCategoryIndex !== -1) {
+          this.todoNodes[currentCategoryIndex].children?.push(task)
+          this.expanded = [this.currentCategory?.id]
+        }
       } else {
         this.todoNodes.push(task)
       }
