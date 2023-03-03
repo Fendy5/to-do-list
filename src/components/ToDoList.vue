@@ -77,11 +77,12 @@
             <div class="text-h6">设置可编辑权限</div>
           </q-card-section>
           <q-card-section class="q-pt-none">
-            <q-toggle v-model="isNeedLogin" label="是否需要登录" left-label />
+            <q-select transition-show="jump-up" map-options emit-value transition-hide="jump-up" dense color="purple-12" v-model="auth" :options="authOptions" label="设置权限">
+            </q-select>
           </q-card-section>
           <q-card-actions align="right" class="text-primary">
             <q-btn flat label="取消" v-close-popup />
-            <q-btn flat label="确定" @click='generateLink' v-close-popup />
+            <q-btn flat :disable='auth===null' label="确定" @click='generateLink' v-close-popup />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -135,7 +136,6 @@ export default class Folder extends Vue {
   private title = ''
   private authDialog = false
   private linkDialog = false
-  private isNeedLogin = false
   private shareLink = ''
   private isTop = false
   private isSticky = false // 键盘是否调起
@@ -144,12 +144,19 @@ export default class Folder extends Vue {
   private labelWidth = window.screen.width
   private isMobile = isMobile()
   private expanded = ['']
+  private auth: number | null = null // 分享链接的授权选项
   // private waitIcon = require('../../public/static/images/wait.svg')
   // private selectedNode: string | null = null
 
   private loading = {
     page: true
   }
+
+  private authOptions = [
+    { label: '仅自己可看', value: 0 },
+    { label: '所有人可查看', value: 1 },
+    { label: '所有人可编辑', value: 2 }
+  ]
 
   private todoNodes: TodoItemProp[] = []
 
@@ -200,7 +207,7 @@ export default class Folder extends Vue {
 
   private initWebsocket() {
     const channel = echo.private(`private.todo.${this.listId}`)
-    console.log('init~')
+    console.log('初始化~')
     channel.subscribed(() => {
       console.log('subscribed~')
     }).listen('.todo-message', (e: TodoItemProp[]) => {
@@ -210,13 +217,13 @@ export default class Folder extends Vue {
   }
 
   async getToDoDetail() {
-    const value = await getTodoDetailApi(this.listId)
-    this.todoNodes = value.data.content
-    this.title = value.data.name
-    this.isTop = value.data.is_top
-    this.isNeedLogin = !value.data.can_edit
+    const { data:{ content, name, is_top, auth, folder } } = await getTodoDetailApi(this.listId)
+    this.todoNodes = content
+    this.title = name
+    this.isTop = is_top
+    this.auth = auth
     document.title = this.title
-    this.$emit('folder', { ...value.data.folder, title: this.title })
+    this.$emit('folder', { ...folder, title: this.title })
     this.loading.page = false
   }
 
@@ -300,7 +307,7 @@ export default class Folder extends Vue {
 
   // 操控权限，显示TODO链接
   private async generateLink() {
-    const { code } = await setTodoAuthApi(this.listId, { can_edit: !this.isNeedLogin })
+    const { code } = await setTodoAuthApi(this.listId, { auth: this.auth })
     if (code === 0) {
       this.shareLink = `${process.env.VUE_APP_HOST}/s/${this.listId}`
       this.linkDialog = true
