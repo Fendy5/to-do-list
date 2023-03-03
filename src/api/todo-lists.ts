@@ -71,7 +71,7 @@ export const getTodoListApi = (id: string) =>
   })
 
 // 获取TODOList详情，不含文件夹
-export const setTodoAuthApi = (id: string, data: { 'can_edit': boolean }) =>
+export const setTodoAuthApi = (id: string, data: { auth: number | null }) =>
   request({
     url: `/api/v1/todo-auth/${id}`,
     method: 'put',
