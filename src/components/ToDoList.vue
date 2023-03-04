@@ -57,15 +57,15 @@
           <!-- 清空状态-->
           <q-fab-action @click="clearStatus" icon='layers_clear' external-label label='清空状态' label-position="left"  color="primary" ></q-fab-action>
           <!-- 清空列表-->
-          <q-fab-action @click="clearAll" icon='delete_sweep' external-label label='清空' label-position="left"  color="primary" ></q-fab-action>
+          <q-fab-action @click="clearAll" icon='delete_sweep' external-label label='清空列表' label-position="left"  color="primary" ></q-fab-action>
           <!-- 取消置顶-->
-          <q-fab-action @click="top(listId, isTop)" external-label :label='isTop?"取消置顶":"置顶"' label-position="left"  color="primary"  >
+          <q-fab-action @click="top(listId, isTop)" external-label :label='isTop?"取消置顶":"置顶列表"' label-position="left"  color="primary"  >
             <template>
               <svg-icon class="text-white wh-25" icon-class="cancel-pin" />
             </template>
           </q-fab-action>
-          <!-- 分享-->
-          <q-fab-action @click="authDialog=true" external-label label='分享' label-position="left"  color="primary" >
+          <!-- 分享链接-->
+          <q-fab-action @click="authDialog=true" external-label label='分享链接' label-position="left"  color="primary" >
             <template>
               <svg-icon class="text-white wh-25" icon-class="share" />
             </template>
