@@ -54,6 +54,8 @@
       <!-- 操作小图标-->
       <q-page-sticky v-if='!isDisabled' position="bottom-right" :offset="[32, 90]">
         <q-fab icon="keyboard_arrow_up" direction="up" color="primary">
+          <!-- 清空状态-->
+          <q-fab-action @click="clearStatus" icon='layers_clear' external-label label='清空状态' label-position="left"  color="primary" ></q-fab-action>
           <!-- 清空列表-->
           <q-fab-action @click="clearAll" icon='delete_sweep' external-label label='清空' label-position="left"  color="primary" ></q-fab-action>
           <!-- 取消置顶-->
@@ -301,6 +303,18 @@ export default class Folder extends Vue {
   private changeStatus(nodes: TodoItemProp[], status: boolean) {
     return nodes.map(i => {
       i.done = status
+      return i
+    })
+  }
+
+  // 清空TodoList状态
+  clearStatus() {
+    this.canUpdate = true
+    this.todoNodes = this.todoNodes.map(i => {
+      if (i.children?.length) {
+        this.changeStatus(i.children, false)
+      }
+      i.done = false
       return i
     })
   }
