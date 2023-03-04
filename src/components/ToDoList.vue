@@ -330,8 +330,8 @@ export default class Folder extends Vue {
 
   // 置顶
   private async top(id: string, cancel = false) {
-    const { data } = await topApi(id, { cancel })
-    this.isTop = data[0].is_top
+    const { code } = await topApi(id, { cancel })
+    code === 0 && (this.isTop = true)
   }
 
   // 复制链接
