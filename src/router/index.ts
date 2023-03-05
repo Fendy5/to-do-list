@@ -83,6 +83,11 @@ const routes: Array<RouteConfig> = [
     path: '/register',
     name: 'Register',
     component: () => import(/* webpackChunkName: "register" */ '@/views/login/register.vue')
+  },
+  {
+    path: '/unauthorized',
+    name: 'Unauthorized',
+    component: () => import(/* webpackChunkName: "unauthorized" */ '@/views/unauthorized/index.vue')
   }
 ]
 
