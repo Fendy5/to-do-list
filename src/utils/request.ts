@@ -34,12 +34,7 @@ service.interceptors.response.use(
         message: res.message
       })
       return res
-    } else if ([1, 2, 401].includes(res.code)) {
-      Notify.create({
-        type: 'negative',
-        position: 'top',
-        message: res.message
-      })
+    } else {
       if (res.code === 1) {
         setTimeout(() => {
           UserModule.ResetToken()
@@ -47,6 +42,12 @@ service.interceptors.response.use(
         }, 1000)
       } else if (res.code === 401) {
         window.location.href = '/unauthorized'
+      } else {
+        Notify.create({
+          type: 'negative',
+          position: 'top',
+          message: res.message
+        })
       }
       return Promise.reject(res)
     }
