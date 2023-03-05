@@ -327,13 +327,21 @@ export default class Folder extends Vue {
 
   // 清空TodoList状态
   clearStatus() {
-    this.canUpdate = true
-    this.todoNodes = this.todoNodes.map(i => {
-      if (i.children?.length) {
-        this.changeStatus(i.children, false)
-      }
-      i.done = false
-      return i
+    this.$q.dialog({
+      title: '警告',
+      message: '是否确认清空状态？',
+      cancel: '取消',
+      ok: '确定',
+      persistent: true
+    }).onOk(() => {
+      this.canUpdate = true
+      this.todoNodes = this.todoNodes.map(i => {
+        if (i.children?.length) {
+          this.changeStatus(i.children, false)
+        }
+        i.done = false
+        return i
+      })
     })
   }
 
@@ -364,7 +372,16 @@ export default class Folder extends Vue {
 
   // 清空列表
   private clearAll() {
-    this.todoNodes = []
+    this.$q.dialog({
+      title: '警告',
+      message: '是否确认清空列表？',
+      cancel: '取消',
+      ok: '确定',
+      persistent: true
+    }).onOk(() => {
+      this.canUpdate = true
+      this.todoNodes = []
+    })
   }
 
   // private toggleEdit(index: number) {
