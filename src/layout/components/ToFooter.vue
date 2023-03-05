@@ -1,5 +1,5 @@
 <template>
-  <footer><div v-if='!isMobile' class="copyright">Copyright @{{ year }} <a href="https://fendy5.cn">Fendy</a> All Rights Reserved </div></footer>
+  <footer><div v-if='!isMobile' class="copyright">Copyright @2021-{{ year }} <a href="https://fendy5.cn">Fendy</a> All Rights Reserved </div></footer>
 </template>
 
 <script lang="ts">

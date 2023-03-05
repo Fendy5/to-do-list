@@ -1,6 +1,6 @@
 <template>
   <div class='share'>
-    <to-do-list :is-disabled='true' :list-id='listId' />
+    <to-do-list :page-sticky='false' :is-disabled='true' :list-id='listId' />
   </div>
 </template>
 

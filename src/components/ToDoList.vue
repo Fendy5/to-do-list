@@ -53,7 +53,7 @@
         </div>
       </div>
       <!-- 操作小图标-->
-      <q-page-sticky v-if='!isDisabled' position="bottom-right" :offset="[32, 90]">
+      <q-page-sticky v-if='pageSticky' position="bottom-right" :offset="[32, 90]">
         <q-fab icon="keyboard_arrow_up" direction="up" color="primary">
           <!-- 清空状态-->
           <q-fab-action @click="clearStatus" icon='layers_clear' external-label label='清空状态' label-position="left"  color="primary" ></q-fab-action>
@@ -178,6 +178,9 @@ export default class Folder extends Vue {
     default: ''
   })
   readonly listId!:string
+
+  @Prop({ type: Boolean, default: true })
+  private pageSticky!:boolean
 
   get userId() {
     return UserModule.user.id
