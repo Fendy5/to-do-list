@@ -17,16 +17,16 @@ module.exports = {
   transpileDependencies: [
     'quasar'
   ],
-  lintOnSave: false,
   devServer: {
     overlay: {
       warnings: false,
       errors: true
     },
+    port: 8021,
     proxy: {
       // 开发环境代理访问接口
       '/dev-api': {
-        target: 'https://todo.Fendy5.cn',
+        target: 'http://127.0.0.1:7035',
         changeOrigin: true,
         pathRewrite: {
           '^/dev-api': ''
