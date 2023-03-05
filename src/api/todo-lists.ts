@@ -10,7 +10,7 @@ export const getTodoListsApi = (params: any) =>
 
 export const getTodoDetailApi = (id: string) =>
   request({
-    url: `/api/v1/todo-lists/${id}`,
+    url: `/api/v1/get-list/${id}`,
     method: 'get'
   })
 

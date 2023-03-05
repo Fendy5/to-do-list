@@ -4,6 +4,7 @@ import store from '@/store'
 import {getUserInfo, login} from "@/api/users"
 
 export interface UserInfo {
+  id: number
   nickname: string
   avatar: string
   openid: string
@@ -19,6 +20,7 @@ export interface IUserState {
 class User extends VuexModule implements IUserState {
   public token = getToken() || ''
   public user = {
+    id: 0,
     nickname: '',
     avatar: '',
     openid: '',
@@ -62,14 +64,15 @@ class User extends VuexModule implements IUserState {
 
   @Action
   public async GetUserInfo() {
-    getUserInfo().then(value => {
-      const user = {
-        nickname: value.data.nickname,
-        openid: value.data.openid,
-        avatar: value.data.avatar,
-        email: value.data.email
-      }
-      this.SET_USER(user)
+    getUserInfo().then(({ data }) => {
+      // const user = {
+      //   id: value.data.id,
+      //   nickname: value.data.nickname,
+      //   openid: value.data.openid,
+      //   avatar: value.data.avatar,
+      //   email: value.data.email
+      // }
+      this.SET_USER(data)
     })
   }
 

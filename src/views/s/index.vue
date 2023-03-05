@@ -1,7 +1,6 @@
 <template>
   <div class='share'>
     <to-do-list :is-disabled='true' :list-id='listId' />
-<!--    <q-input @blur='handleBlur' v-model='form' placeholder="添加任务" />-->
   </div>
 </template>
 

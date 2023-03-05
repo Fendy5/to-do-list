@@ -6,7 +6,7 @@
           size="96px"
           @click="changeAvatar"
       >
-        <img :src="form.avatar">
+        <img :src="form.avatar" alt='avatar'>
       </q-avatar>
       <div v-if="edit===0">
         <div class="user-item">
@@ -82,6 +82,7 @@ import {UserModule} from "@/store/modules/user"
 
 export default class User extends Vue {
   private form = {
+    id: 0,
     nickname: '',
     openid: '',
     avatar: '',

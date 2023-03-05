@@ -3,7 +3,7 @@
     <q-spinner-cube v-if="loading.page" class="center" size="5em" color="primary" />
     <template v-else>
       <div class="flex h-full">
-        <div class="todo-list">
+        <div :class='isDisabled? "is-disabled":""' class="todo-list">
           <q-tabs v-model="tab" narrow-indicator dense align="justify">
             <q-tab class="text-primary" name="all" icon="apps" label="全部" />
             <q-tab class="text-orange" name="todo" icon="img:/static/images/wait.svg" label="待完成" />
@@ -20,11 +20,11 @@
                   <template v-slot:default-header='{node}'>
                     <div class="list-complete-item">
                       <div class="todo-item">
-                        <q-checkbox @input="(val) => changeInput(val,node)" v-model="node.done" />
+                        <q-checkbox :disable='isDisabled' @input="(val) => changeInput(val,node)" v-model="node.done" />
                         <q-item-section @dblclick='() => { toggleEdit(node, true) }'>
                           <div v-if='!node.editAble' class="fx-between px-16 text-content">
                             <span :style='isMobile?{width: `${labelWidth - 260}px`}: {}' class='content'>{{node.label}}</span>
-                            <span class='handle-icon' v-if='!node.isParent'>
+                            <span class='handle-icon' v-if='!isDisabled'>
                               <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, true)' name='north' />
                               <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, false)' name='south' />
                               <q-icon @click.stop='deleteTask(node.id)' class="danger-text invisible" size="20px" name="delete" />
@@ -44,11 +44,12 @@
               </q-scroll-area>
             </div>
           </div>
-          <div class="todo-footer flex">
+          <div v-if='!isDisabled' class="todo-footer flex">
             <q-select dense filled clearable class='select-label' color="purple-12" transition-show="jump-up" transition-hide="jump-up" v-model="currentCategory" :options="todoNodes"></q-select>
             <q-input dense filled @focus='isSticky=true' @blur='isSticky=false' class='flex-1' @keyup.enter="addTask" v-model="text" label="添加一个任务(回车键确认)">
             </q-input>
           </div>
+          <div v-else class='todo-footer flex'></div>
         </div>
       </div>
       <!-- 操作小图标-->
@@ -116,6 +117,7 @@ import { Notify } from 'quasar'
 import { TodoItemProp } from '@/types/todo-list'
 import { debounce } from 'lodash'
 import { echo } from '@/utils/echo'
+import { UserModule } from '@/store/modules/user'
 
 export interface Task {
   id: string
@@ -149,6 +151,7 @@ export default class Folder extends Vue {
   private auth: number | null = null // 分享链接的授权选项
   // private waitIcon = require('../../public/static/images/wait.svg')
   // private selectedNode: string | null = null
+  private listUserId = 0
 
   private loading = {
     page: true
@@ -175,6 +178,14 @@ export default class Folder extends Vue {
     default: ''
   })
   readonly listId!:string
+
+  get userId() {
+    return UserModule.user.id
+  }
+
+  get isDisabled() {
+    return !(this.auth === 2 || this.listUserId === this.userId)
+  }
 
   get todoAmount() {
     let [allAmount, completedAmount] = [0, 0]
@@ -208,22 +219,29 @@ export default class Folder extends Vue {
   }
 
   private initWebsocket() {
-    const channel = echo.private(`private.todo.${this.listId}`)
+    // const channel = echo.private(`private.todo.${this.listId}`)
+    // console.log('初始化~')
+    // channel.subscribed(() => {
+    //   console.log('已连接~')
+    // }).listen('.todo-message', (e: TodoItemProp[]) => {
+    //   this.todoNodes = e
+    // })
+    const channel = echo.channel(`public.todo.${this.listId}`)
     console.log('初始化~')
     channel.subscribed(() => {
-      console.log('subscribed~')
+      console.log('已连接~')
     }).listen('.todo-message', (e: TodoItemProp[]) => {
-      console.log(e)
       this.todoNodes = e
     })
   }
 
   async getToDoDetail() {
-    const { data:{ content, name, is_top, auth, folder } } = await getTodoDetailApi(this.listId)
+    const { data:{ content, name, is_top, auth, folder, user_id } } = await getTodoDetailApi(this.listId)
     this.todoNodes = content
     this.title = name
     this.isTop = is_top
     this.auth = auth
+    this.listUserId = user_id
     document.title = this.title
     this.$emit('folder', { ...folder, title: this.title })
     this.loading.page = false
@@ -357,16 +375,18 @@ export default class Folder extends Vue {
   // }
 
   private toggleEdit(node: TodoItemProp, isEdit = true) {
-    if (isEdit) {
-      this.selectedText = node.label
-    }
-    node.editAble = isEdit
-    if (node.label !== this.selectedText) {
-      this.canUpdate = !isEdit
-    }
-    if (!isEdit && node.label !== this.selectedText) {
-      this.canUpdate = true
-      this.updateTask(this)
+    if (!this.isDisabled) {
+      if (isEdit) {
+        this.selectedText = node.label
+      }
+      node.editAble = isEdit
+      if (node.label !== this.selectedText) {
+        this.canUpdate = !isEdit
+      }
+      if (!isEdit && node.label !== this.selectedText) {
+        this.canUpdate = true
+        this.updateTask(this)
+      }
     }
   }
 
@@ -488,7 +508,7 @@ export default class Folder extends Vue {
   top: 50%;
   transform: translate(-50%, -50%);
   width: 450px;
-  height: 580px;
+  height: 610px;
   padding: 24px;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
   .todo-header {
@@ -520,7 +540,7 @@ export default class Folder extends Vue {
       }
     }
     .q-scrollarea {
-      height: 375px;
+      height: 405px;
     }
     .list-complete-item {
       transition: all 1s;
@@ -601,6 +621,24 @@ export default class Folder extends Vue {
     padding-top: 12px;
     position: sticky !important;
     width: 100% !important;
+  }
+}
+.is-disabled {
+  .todo-main {
+    background: #eeeeee;
+
+    .list-complete-item {
+      cursor: not-allowed;
+    }
+
+    @media (min-width: 450px) {
+      .q-scrollarea {
+        height: 450px;
+      }
+    }
+  }
+  .todo-footer {
+    height: 15px;
   }
 }
 .ghost {
