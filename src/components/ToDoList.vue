@@ -149,7 +149,7 @@ export default class Folder extends Vue {
   private selectedText = ''
   private labelWidth = window.screen.width
   private isMobile = isMobile()
-  private expanded = ['']
+  private expanded: string[] = []
   private auth: number | null = null // 分享链接的授权选项
   // private waitIcon = require('../../public/static/images/wait.svg')
   // private selectedNode: string | null = null
@@ -242,9 +242,8 @@ export default class Folder extends Vue {
     //   this.todoNodes = e
     // })
     const channel = echo.channel(`public.todo.${this.listId}`)
-    console.log('初始化~')
     channel.subscribed(() => {
-      console.log('已连接~')
+      // todo
     }).listen('.todo-message', (e: TodoItemProp[]) => {
       this.todoNodes = e
     })
