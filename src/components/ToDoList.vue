@@ -55,6 +55,8 @@
       <!-- 操作小图标-->
       <q-page-sticky v-if='pageSticky' position="bottom-right" :offset="[32, 90]">
         <q-fab icon="keyboard_arrow_up" direction="up" color="primary">
+          <!-- 一键展开-->
+          <q-fab-action @click="expandAll" icon='menu_open' external-label :label='`${expanded.length?"一键折叠":"一键展开"}`' label-position="left"  color="primary" ></q-fab-action>
           <!-- 清空状态-->
           <q-fab-action @click="clearStatus" icon='layers_clear' external-label label='清空状态' label-position="left"  color="primary" ></q-fab-action>
           <!-- 清空列表-->
@@ -219,6 +221,16 @@ export default class Folder extends Vue {
   async created() {
     await this.getToDoDetail()
     this.initWebsocket()
+  }
+
+  // 一键展开/折叠
+  private expandAll() {
+    if (this.expanded.length) {
+      this.expanded = []
+    } else {
+      const parentNodes = this.todoNodes.filter(i => i.children?.length)
+      this.expanded = parentNodes.map(i => i.id)
+    }
   }
 
   private initWebsocket() {
