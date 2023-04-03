@@ -23,7 +23,12 @@
                         <q-checkbox :disable='isDisabled' @input="(val) => changeInput(val,node)" v-model="node.done" />
                         <q-item-section @dblclick='() => { toggleEdit(node, true) }'>
                           <div v-if='!node.editAble' class="fx-between px-16 text-content">
-                            <span :style='isMobile?{width: `${labelWidth - 260}px`}: {}' class='content'>{{node.label}}</span>
+                            <span :style='isMobile?{width: `${labelWidth - 260}px`}: {}' class='content'>
+                              {{node.label}}
+                              <q-tooltip transition-show="scale" transition-hide="scale" content-class="bg-purple" :offset="[10, 10]">
+                                {{node.label}}
+                              </q-tooltip>
+                            </span>
                             <span class='handle-icon' v-if='!isDisabled'>
                               <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, true)' name='north' />
                               <q-icon class='invisible' size="20px" @click.stop='moveNode(node.id, false)' name='south' />
