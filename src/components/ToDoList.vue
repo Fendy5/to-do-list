@@ -50,7 +50,7 @@
             </div>
           </div>
           <div v-if='!isDisabled' class="todo-footer flex">
-            <q-select dense filled clearable class='select-label' color="purple-12" transition-show="jump-up" transition-hide="jump-up" v-model="currentCategory" :options="todoNodes"></q-select>
+            <q-select label="分类"  dense filled clearable class='select-label' color="purple-12" transition-show="jump-up" transition-hide="jump-up" v-model="currentCategory" :options="todoNodes"></q-select>
             <q-input dense filled @focus='isSticky=true' @blur='isSticky=false' class='flex-1' @keyup.enter="addTask" v-model="text" label="添加一个任务(回车键确认)">
             </q-input>
           </div>
