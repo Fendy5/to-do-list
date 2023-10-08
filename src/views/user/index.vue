@@ -124,10 +124,12 @@ export default class User extends Vue {
   }
 
   initPage() {
-    getUserInfo().then(value => {
-      this.user = value.data
-      this.form = value.data
+    getUserInfo().then(({ data }) => {
+      this.user = data
+      this.form = data
       this.form['password'] = '********'
+
+      UserModule.SetToken(data.token)
     })
   }
 
