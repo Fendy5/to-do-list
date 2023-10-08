@@ -64,14 +64,15 @@ export default class Login extends mixins(loginMixin) {
 
   private async handleLogin() {
     this.loading = true
-    await UserModule.Login(this.loginForm).then( () => {
+    UserModule.Login(this.loginForm).then(async() => {
       this.loading = false
-    })
-    this.$router.push({
-      path: this.redirect || '/',
-      query: this.otherQuery
-    }).catch(err => {
-      console.warn(err)
+      await UserModule.GetUserInfo()
+      this.$router.push({
+        path: this.redirect || '/',
+        query: this.otherQuery
+      }).catch(err => {
+        console.warn(err)
+      })
     })
   }
 

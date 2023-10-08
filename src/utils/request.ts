@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { UserModule } from '@/store/modules/user'
 import { Notify } from 'quasar'
+import router from '@/router'
+import { getToken } from '@/utils/cookies'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -11,9 +13,10 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // 判断store是否存在token
-    if (UserModule.token) {
+    const token = UserModule.token || getToken()
+    if (token) {
       // 存在token就在请求携带token
-      config.headers.Authorization = 'Bearer ' + UserModule.token
+      config.headers.Authorization = 'Bearer ' + token
     }
     return config
   },
@@ -36,9 +39,15 @@ service.interceptors.response.use(
       return res
     } else {
       if (res.code === 1) {
+        Notify.create({
+          type: 'negative',
+          position: 'top',
+          message: '登录已失效，请重新登录'
+        })
         setTimeout(() => {
           UserModule.ResetToken()
-          location.reload()
+          // location.reload()
+          router.replace('/login')
         }, 1000)
       } else if (res.code === 401) {
         window.location.href = '/unauthorized'

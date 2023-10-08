@@ -1,7 +1,7 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
-import { getToken, setToken, removeToken } from '@/utils/cookies'
+import { setToken, removeToken } from '@/utils/cookies'
 import store from '@/store'
-import {getUserInfo, login} from "@/api/users"
+import { getUserInfo, login } from '@/api/users'
 
 export interface UserInfo {
   id: number
@@ -16,9 +16,9 @@ export interface IUserState {
   user: UserInfo
 }
 
-@Module({dynamic: true, store, name: 'user'})
+@Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
-  public token = getToken() || ''
+  public token = ''
   public user = {
     id: 0,
     nickname: '',
@@ -44,14 +44,14 @@ class User extends VuexModule implements IUserState {
   }
 
   @Action
-  public async Login(userInfo: { email: string, password: string}) {
+  public async Login(userInfo: { email: string, password: string }) {
     try {
       const { data } = await login(userInfo)
       if (data.token) {
         setToken(data.token)
         this.SET_TOKEN(data.token)
       }
-    }catch (e) {
+    } catch (e) {
 
     }
   }
@@ -62,18 +62,18 @@ class User extends VuexModule implements IUserState {
     this.SET_TOKEN(token)
   }
 
-  @Action
+  @Action({rawError: true})
   public async GetUserInfo() {
-    getUserInfo().then(({ data }) => {
-      // const user = {
-      //   id: value.data.id,
-      //   nickname: value.data.nickname,
-      //   openid: value.data.openid,
-      //   avatar: value.data.avatar,
-      //   email: value.data.email
-      // }
+    const { data } = await getUserInfo()
+    if (data.token) {
+      const token = data.token
+      setToken(token)
+      this.SET_TOKEN(token)
       this.SET_USER(data)
-    })
+      return true
+    } else {
+      return false
+    }
   }
 
   @Action

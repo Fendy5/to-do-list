@@ -23,7 +23,9 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
     if (whiteList.indexOf(to.path) !== -1 || to.path.match(/\/s\/*/)) {
       next()
     } else {
-      next(`/login?redirect=${to.path}`)
+      UserModule.GetUserInfo().then((rsp) => {
+        rsp ? next() : next(`/login?redirect=${to.path}`)
+      })
     }
   }
 })

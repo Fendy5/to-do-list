@@ -51,10 +51,6 @@ import { UserModule } from "@/store/modules/user"
 
 export default class extends Vue {
 
-  created() {
-    this.token && UserModule.GetUserInfo()
-  }
-
   get routes() {
     return this.$router.options.routes && this.$router.options.routes[0].children
   }
