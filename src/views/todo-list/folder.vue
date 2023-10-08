@@ -57,6 +57,7 @@
             </q-menu>
           </RouterLink>
           <span class="text-primary text-center ellipsis-2 todo-name">{{ i.name }}</span>
+          <span class="todo-time">{{ transformUpdateTime(i.updated_at) }}</span>
         </div>
       </div>
       <div v-else class="center">
@@ -76,12 +77,14 @@ import PageSticky from "@/components/PageSticky.vue"
 import { addTodoListsApi, deleteTodoListsApi, getTodoListsApi, reuseTodoListApi, topApi, updateTodoListsApi } from '@/api/todo-lists'
 import { ReuseToDoListProp } from '@/types/todo-list'
 import { getFoldersApi } from '@/api/folders'
+import dayjs from 'dayjs'
 
 export interface TodoListProp {
   folder_id: string
   id: number
   is_top: boolean
   list_id: string
+  updated_at?: string
   name: string
 }
 
@@ -126,6 +129,10 @@ export default class Folder extends Vue {
     })
   }
 
+  // 转换时间格式
+  private transformUpdateTime(time: string) {
+    return dayjs(time).format('YYYY/MM/DD hh:mm')
+  }
 
   private async reuseToDoList(TodoListItem: TodoListProp) {
     this.reuseDialog = true
@@ -190,5 +197,10 @@ export default class Folder extends Vue {
 <style lang="scss" scoped>
 .todo-icon {
   width: 4rem;
+}
+.todo-time {
+  text-align: center;
+  font-size: 12px;
+  color: #8e8fb4b8;
 }
 </style>
