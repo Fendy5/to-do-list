@@ -131,7 +131,7 @@ export default class Folder extends Vue {
 
   // 转换时间格式
   private transformUpdateTime(time: string) {
-    return dayjs(time).format('YYYY/MM/DD hh:mm')
+    return dayjs(time).format('YYYY/MM/DD HH:mm')
   }
 
   private async reuseToDoList(TodoListItem: TodoListProp) {
