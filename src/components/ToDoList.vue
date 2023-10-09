@@ -123,7 +123,7 @@ import { copyText, isMobile } from '@/utils'
 import { Notify } from 'quasar'
 import { TodoItemProp } from '@/types/todo-list'
 import { debounce } from 'lodash'
-import { echo } from '@/utils/echo'
+// import { echo } from '@/utils/echo'
 import { UserModule } from '@/store/modules/user'
 
 export interface Task {
@@ -225,7 +225,7 @@ export default class Folder extends Vue {
 
   async created() {
     await this.getToDoDetail()
-    this.initWebsocket()
+    // this.initWebsocket()
   }
 
   // 一键展开/折叠
@@ -239,19 +239,12 @@ export default class Folder extends Vue {
   }
 
   private initWebsocket() {
-    // const channel = echo.private(`private.todo.${this.listId}`)
-    // console.log('初始化~')
+    // const channel = echo.channel(`public.todo.${this.listId}`)
     // channel.subscribed(() => {
-    //   console.log('已连接~')
+    //   // todo
     // }).listen('.todo-message', (e: TodoItemProp[]) => {
     //   this.todoNodes = e
     // })
-    const channel = echo.channel(`public.todo.${this.listId}`)
-    channel.subscribed(() => {
-      // todo
-    }).listen('.todo-message', (e: TodoItemProp[]) => {
-      this.todoNodes = e
-    })
   }
 
   async getToDoDetail() {
