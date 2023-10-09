@@ -7,5 +7,5 @@ export const setSidebarStatus = (sidebarStatus: string) => Cookies.set(sidebarSt
 // User
 const tokenKey = 'to_do_access_token'
 export const getToken = () => Cookies.get(tokenKey)
-export const setToken = (token: string) => Cookies.set(tokenKey, token)
+export const setToken = (token: string) => Cookies.set(tokenKey, token, { expires: 7 })
 export const removeToken = () => Cookies.remove(tokenKey)
