@@ -17,6 +17,12 @@ const routes: Array<RouteConfig> = [
         component: () => import(/* webpackChunkName: "home" */ '@/views/home/index.vue')
       },
       {
+        path: '/todo-everyday',
+        name: 'TodoEveryDay',
+        meta: { title: '日常Todo', icon: 'event_available' },
+        component: () => import(/* webpackChunkName: "todo-everyday" */ '@/views/todo-everyday/index.vue')
+      },
+      {
         path: '/todo-sets',
         name: 'TodoSet',
         meta: { title: 'ToDo集', icon: 'widgets' },

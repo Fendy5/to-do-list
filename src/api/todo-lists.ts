@@ -78,9 +78,8 @@ export const setTodoAuthApi = (id: string, data: { auth: number | null }) =>
     data
   })
 
-
-
-
-
-
-
+// 获取每天必做的ID
+export const todoEveryDayApi = () => request({
+  url: `/api/v1/todo-everyday`,
+  method: 'get'
+})
